@@ -8,7 +8,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	"github.com/darkowlzz/operator-toolkit/controller/external/cache"
+	"github.com/ondat/operator-toolkit/controller/external/cache"
 )
 
 var log = ctrl.Log.WithName("eventhandler").WithName("EnqueueRequestFromCache")

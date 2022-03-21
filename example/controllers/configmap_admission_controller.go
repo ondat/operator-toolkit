@@ -7,9 +7,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
-	tkadmission "github.com/darkowlzz/operator-toolkit/webhook/admission"
-	"github.com/darkowlzz/operator-toolkit/webhook/builder"
-	"github.com/darkowlzz/operator-toolkit/webhook/function"
+	tkadmission "github.com/ondat/operator-toolkit/webhook/admission"
+	"github.com/ondat/operator-toolkit/webhook/builder"
+	"github.com/ondat/operator-toolkit/webhook/function"
 )
 
 type ConfigMapAdmissionController struct {

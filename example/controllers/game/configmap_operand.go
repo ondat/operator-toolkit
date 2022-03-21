@@ -9,12 +9,12 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/kustomize/api/filesys"
 
-	"github.com/darkowlzz/operator-toolkit/declarative"
-	"github.com/darkowlzz/operator-toolkit/declarative/kustomize"
-	"github.com/darkowlzz/operator-toolkit/declarative/transform"
-	eventv1 "github.com/darkowlzz/operator-toolkit/event/v1"
-	appv1alpha1 "github.com/darkowlzz/operator-toolkit/example/api/v1alpha1"
-	"github.com/darkowlzz/operator-toolkit/operator/v1/operand"
+	"github.com/ondat/operator-toolkit/declarative"
+	"github.com/ondat/operator-toolkit/declarative/kustomize"
+	"github.com/ondat/operator-toolkit/declarative/transform"
+	eventv1 "github.com/ondat/operator-toolkit/event/v1"
+	appv1alpha1 "github.com/ondat/operator-toolkit/example/api/v1alpha1"
+	"github.com/ondat/operator-toolkit/operator/v1/operand"
 )
 
 // manifestPackage is the name of the package that contains manifests for the

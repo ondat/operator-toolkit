@@ -10,7 +10,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	"github.com/darkowlzz/operator-toolkit/controller/external/source"
+	"github.com/ondat/operator-toolkit/controller/external/source"
 )
 
 // Builder builds a Controller.

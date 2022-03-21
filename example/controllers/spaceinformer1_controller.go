@@ -3,8 +3,8 @@ package controllers
 import (
 	"context"
 
-	"github.com/darkowlzz/operator-toolkit/source"
-	"github.com/darkowlzz/operator-toolkit/telemetry"
+	"github.com/ondat/operator-toolkit/source"
+	"github.com/ondat/operator-toolkit/telemetry"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
@@ -12,7 +12,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 
-	appv1alpha1 "github.com/darkowlzz/operator-toolkit/example/api/v1alpha1"
+	appv1alpha1 "github.com/ondat/operator-toolkit/example/api/v1alpha1"
 )
 
 // SpaceInformer1Reconciler reconciles external object from space.

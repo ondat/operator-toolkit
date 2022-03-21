@@ -1,13 +1,13 @@
 package v1
 
-//go:generate mockgen -destination=mocks/mock_controller.go -package=mocks github.com/darkowlzz/operator-toolkit/controller/external-object-sync/v1 Controller
+//go:generate mockgen -destination=mocks/mock_controller.go -package=mocks github.com/ondat/operator-toolkit/controller/external-object-sync/v1 Controller
 
 import (
 	"context"
 
 	"k8s.io/apimachinery/pkg/types"
 
-	syncv1 "github.com/darkowlzz/operator-toolkit/controller/sync/v1"
+	syncv1 "github.com/ondat/operator-toolkit/controller/sync/v1"
 )
 
 // Controller is an external object sync controller interface that must be

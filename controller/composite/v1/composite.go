@@ -9,8 +9,8 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/darkowlzz/operator-toolkit/constant"
-	"github.com/darkowlzz/operator-toolkit/telemetry"
+	"github.com/ondat/operator-toolkit/constant"
+	"github.com/ondat/operator-toolkit/telemetry"
 )
 
 // CleanupStrategy is the resource cleanup strategy used by the reconciler.

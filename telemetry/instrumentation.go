@@ -10,7 +10,7 @@ import (
 	"go.opentelemetry.io/otel/trace"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	"github.com/darkowlzz/operator-toolkit/telemetry/tracing"
+	"github.com/ondat/operator-toolkit/telemetry/tracing"
 )
 
 // Name of the logger library key.

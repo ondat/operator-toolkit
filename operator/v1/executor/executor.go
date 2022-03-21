@@ -13,10 +13,10 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/darkowlzz/operator-toolkit/constant"
-	eventv1 "github.com/darkowlzz/operator-toolkit/event/v1"
-	"github.com/darkowlzz/operator-toolkit/operator/v1/operand"
-	"github.com/darkowlzz/operator-toolkit/telemetry"
+	"github.com/ondat/operator-toolkit/constant"
+	eventv1 "github.com/ondat/operator-toolkit/event/v1"
+	"github.com/ondat/operator-toolkit/operator/v1/operand"
+	"github.com/ondat/operator-toolkit/telemetry"
 )
 
 // Name of the instrumentation.

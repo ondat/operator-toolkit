@@ -10,10 +10,10 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	compositev1 "github.com/darkowlzz/operator-toolkit/controller/composite/v1"
-	appv1alpha1 "github.com/darkowlzz/operator-toolkit/example/api/v1alpha1"
-	"github.com/darkowlzz/operator-toolkit/object"
-	operatorv1 "github.com/darkowlzz/operator-toolkit/operator/v1"
+	compositev1 "github.com/ondat/operator-toolkit/controller/composite/v1"
+	appv1alpha1 "github.com/ondat/operator-toolkit/example/api/v1alpha1"
+	"github.com/ondat/operator-toolkit/object"
+	operatorv1 "github.com/ondat/operator-toolkit/operator/v1"
 )
 
 // GameController is a controller that implements the CompositeReconciler

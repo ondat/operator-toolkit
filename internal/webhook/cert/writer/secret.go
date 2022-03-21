@@ -26,7 +26,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/darkowlzz/operator-toolkit/internal/webhook/cert/generator"
+	"github.com/ondat/operator-toolkit/internal/webhook/cert/generator"
 )
 
 // secretCertWriter provisions the certificate by reading and writing to the

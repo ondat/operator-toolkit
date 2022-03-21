@@ -12,8 +12,8 @@ import (
 	apix "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/darkowlzz/operator-toolkit/internal/webhook/cert/generator"
-	"github.com/darkowlzz/operator-toolkit/internal/webhook/cert/writer"
+	"github.com/ondat/operator-toolkit/internal/webhook/cert/generator"
+	"github.com/ondat/operator-toolkit/internal/webhook/cert/writer"
 )
 
 // NOTE: This file originates from controller-runtime v0.1.

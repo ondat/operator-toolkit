@@ -1,6 +1,6 @@
 package action
 
-//go:generate mockgen -destination=mocks/mock_manager.go -package=mocks github.com/darkowlzz/operator-toolkit/controller/stateless-action/v1/action Manager
+//go:generate mockgen -destination=mocks/mock_manager.go -package=mocks github.com/ondat/operator-toolkit/controller/stateless-action/v1/action Manager
 
 import "context"
 

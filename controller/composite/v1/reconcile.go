@@ -10,8 +10,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 
-	tkctrl "github.com/darkowlzz/operator-toolkit/controller"
-	"github.com/darkowlzz/operator-toolkit/object"
+	tkctrl "github.com/ondat/operator-toolkit/controller"
+	"github.com/ondat/operator-toolkit/object"
 )
 
 // Reconcile implements the composite controller reconciliation.

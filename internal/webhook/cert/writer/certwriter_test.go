@@ -26,7 +26,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	"github.com/darkowlzz/operator-toolkit/internal/webhook/cert/generator"
+	"github.com/ondat/operator-toolkit/internal/webhook/cert/generator"
 )
 
 var certs1, certs2 *generator.Artifacts

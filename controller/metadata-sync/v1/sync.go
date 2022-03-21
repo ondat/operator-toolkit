@@ -8,8 +8,8 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	syncv1 "github.com/darkowlzz/operator-toolkit/controller/sync/v1"
-	"github.com/darkowlzz/operator-toolkit/object"
+	syncv1 "github.com/ondat/operator-toolkit/controller/sync/v1"
+	"github.com/ondat/operator-toolkit/object"
 )
 
 const zeroDuration time.Duration = 0 * time.Minute

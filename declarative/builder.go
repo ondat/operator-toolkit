@@ -8,10 +8,10 @@ import (
 	"sigs.k8s.io/kustomize/api/filesys"
 	"sigs.k8s.io/kustomize/api/konfig"
 
-	"github.com/darkowlzz/operator-toolkit/declarative/kubectl"
-	"github.com/darkowlzz/operator-toolkit/declarative/kustomize"
-	"github.com/darkowlzz/operator-toolkit/declarative/loader"
-	"github.com/darkowlzz/operator-toolkit/declarative/transform"
+	"github.com/ondat/operator-toolkit/declarative/kubectl"
+	"github.com/ondat/operator-toolkit/declarative/kustomize"
+	"github.com/ondat/operator-toolkit/declarative/loader"
+	"github.com/ondat/operator-toolkit/declarative/transform"
 	"github.com/pkg/errors"
 )
 

@@ -6,8 +6,8 @@ import (
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/darkowlzz/operator-toolkit/singleton"
-	"github.com/darkowlzz/operator-toolkit/webhook/admission"
+	"github.com/ondat/operator-toolkit/singleton"
+	"github.com/ondat/operator-toolkit/webhook/admission"
 )
 
 // ValidateLabels takes an object and a set of labels and validates the

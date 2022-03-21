@@ -1,13 +1,13 @@
 package v1
 
-//go:generate mockgen -destination=mocks/mock_controller.go -package=mocks github.com/darkowlzz/operator-toolkit/controller/stateless-action/v1 Controller
+//go:generate mockgen -destination=mocks/mock_controller.go -package=mocks github.com/ondat/operator-toolkit/controller/stateless-action/v1 Controller
 
 import (
 	"context"
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/darkowlzz/operator-toolkit/controller/stateless-action/v1/action"
+	"github.com/ondat/operator-toolkit/controller/stateless-action/v1/action"
 )
 
 // Controller is an interface that must be implemented by a stateless-action

@@ -22,10 +22,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
-	"github.com/darkowlzz/operator-toolkit/singleton"
-	tdv1alpha1 "github.com/darkowlzz/operator-toolkit/testdata/api/v1alpha1"
-	tkadmission "github.com/darkowlzz/operator-toolkit/webhook/admission"
-	"github.com/darkowlzz/operator-toolkit/webhook/builder"
+	"github.com/ondat/operator-toolkit/singleton"
+	tdv1alpha1 "github.com/ondat/operator-toolkit/testdata/api/v1alpha1"
+	tkadmission "github.com/ondat/operator-toolkit/webhook/admission"
+	"github.com/ondat/operator-toolkit/webhook/builder"
 	//+kubebuilder:scaffold:imports
 )
 

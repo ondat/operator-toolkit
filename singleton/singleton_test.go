@@ -9,8 +9,8 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	tkerror "github.com/darkowlzz/operator-toolkit/error"
-	tdv1alpha1 "github.com/darkowlzz/operator-toolkit/testdata/api/v1alpha1"
+	tkerror "github.com/ondat/operator-toolkit/error"
+	tdv1alpha1 "github.com/ondat/operator-toolkit/testdata/api/v1alpha1"
 )
 
 var _ = Describe("Singleton", func() {

@@ -8,7 +8,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 
-	tdv1alpha1 "github.com/darkowlzz/operator-toolkit/testdata/api/v1alpha1"
+	tdv1alpha1 "github.com/ondat/operator-toolkit/testdata/api/v1alpha1"
 )
 
 func TestGetUnstructuredObject(t *testing.T) {

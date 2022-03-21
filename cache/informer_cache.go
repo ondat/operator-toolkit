@@ -20,7 +20,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/apiutil"
 
-	"github.com/darkowlzz/operator-toolkit/cache/informer"
+	"github.com/ondat/operator-toolkit/cache/informer"
 )
 
 // informerCache is a generic cache, based on the Kubernetes object cache,

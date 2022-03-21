@@ -13,7 +13,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 
-	appv1alpha1 "github.com/darkowlzz/operator-toolkit/testdata/api/v1alpha1"
+	appv1alpha1 "github.com/ondat/operator-toolkit/testdata/api/v1alpha1"
 )
 
 var _ = Describe("Defaulter Webhooks", func() {

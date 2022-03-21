@@ -11,10 +11,10 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	"github.com/darkowlzz/operator-toolkit/controller/stateless-action/v1/action"
-	actionmocks "github.com/darkowlzz/operator-toolkit/controller/stateless-action/v1/action/mocks"
-	"github.com/darkowlzz/operator-toolkit/controller/stateless-action/v1/mocks"
-	"github.com/darkowlzz/operator-toolkit/telemetry"
+	"github.com/ondat/operator-toolkit/controller/stateless-action/v1/action"
+	actionmocks "github.com/ondat/operator-toolkit/controller/stateless-action/v1/action/mocks"
+	"github.com/ondat/operator-toolkit/controller/stateless-action/v1/mocks"
+	"github.com/ondat/operator-toolkit/telemetry"
 )
 
 const testActionManagerName = "testAM"

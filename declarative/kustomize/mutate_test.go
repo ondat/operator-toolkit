@@ -3,7 +3,7 @@ package kustomize
 import (
 	"testing"
 
-	"github.com/darkowlzz/operator-toolkit/declarative/loader"
+	"github.com/ondat/operator-toolkit/declarative/loader"
 	"github.com/stretchr/testify/assert"
 	apitypes "sigs.k8s.io/kustomize/api/types"
 	"sigs.k8s.io/yaml"

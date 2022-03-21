@@ -25,11 +25,11 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	extobjsyncv1 "github.com/darkowlzz/operator-toolkit/controller/external-object-sync/v1"
-	syncv1 "github.com/darkowlzz/operator-toolkit/controller/sync/v1"
-	appv1alpha1 "github.com/darkowlzz/operator-toolkit/example/api/v1alpha1"
-	"github.com/darkowlzz/operator-toolkit/example/controllers/externalGameSync"
-	"github.com/darkowlzz/operator-toolkit/telemetry"
+	extobjsyncv1 "github.com/ondat/operator-toolkit/controller/external-object-sync/v1"
+	syncv1 "github.com/ondat/operator-toolkit/controller/sync/v1"
+	appv1alpha1 "github.com/ondat/operator-toolkit/example/api/v1alpha1"
+	"github.com/ondat/operator-toolkit/example/controllers/externalGameSync"
+	"github.com/ondat/operator-toolkit/telemetry"
 )
 
 // ExternalGameSyncReconciler reconciles a Game object to keep it in sync with

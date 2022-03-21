@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"k8s.io/cli-runtime/pkg/genericclioptions"
 
-	"github.com/darkowlzz/operator-toolkit/declarative/applier"
+	"github.com/ondat/operator-toolkit/declarative/applier"
 )
 
 func TestDelete(t *testing.T) {

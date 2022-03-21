@@ -10,10 +10,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 
-	"github.com/darkowlzz/operator-toolkit/controller/external/builder"
-	"github.com/darkowlzz/operator-toolkit/controller/external/handler"
-	appv1alpha1 "github.com/darkowlzz/operator-toolkit/example/api/v1alpha1"
-	"github.com/darkowlzz/operator-toolkit/telemetry"
+	"github.com/ondat/operator-toolkit/controller/external/builder"
+	"github.com/ondat/operator-toolkit/controller/external/handler"
+	appv1alpha1 "github.com/ondat/operator-toolkit/example/api/v1alpha1"
+	"github.com/ondat/operator-toolkit/telemetry"
 )
 
 // NOTE: In the comments below, the term "space" is used instead of

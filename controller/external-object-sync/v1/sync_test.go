@@ -11,9 +11,9 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 
-	"github.com/darkowlzz/operator-toolkit/controller/external-object-sync/v1/mocks"
-	syncv1 "github.com/darkowlzz/operator-toolkit/controller/sync/v1"
-	tdv1alpha1 "github.com/darkowlzz/operator-toolkit/testdata/api/v1alpha1"
+	"github.com/ondat/operator-toolkit/controller/external-object-sync/v1/mocks"
+	syncv1 "github.com/ondat/operator-toolkit/controller/sync/v1"
+	tdv1alpha1 "github.com/ondat/operator-toolkit/testdata/api/v1alpha1"
 )
 
 func TestCollectGarbage(t *testing.T) {
