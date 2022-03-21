@@ -13,8 +13,8 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 
-	"github.com/darkowlzz/operator-toolkit/controller/composite/v1/mocks"
-	tdv1alpha1 "github.com/darkowlzz/operator-toolkit/testdata/api/v1alpha1"
+	"github.com/ondat/operator-toolkit/controller/composite/v1/mocks"
+	tdv1alpha1 "github.com/ondat/operator-toolkit/testdata/api/v1alpha1"
 )
 
 func TestCleanupHandler(t *testing.T) {

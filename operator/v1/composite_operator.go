@@ -13,11 +13,11 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/darkowlzz/operator-toolkit/operator/v1/dag"
-	"github.com/darkowlzz/operator-toolkit/operator/v1/executor"
-	"github.com/darkowlzz/operator-toolkit/operator/v1/operand"
-	"github.com/darkowlzz/operator-toolkit/telemetry"
 	"github.com/go-logr/logr"
+	"github.com/ondat/operator-toolkit/operator/v1/dag"
+	"github.com/ondat/operator-toolkit/operator/v1/executor"
+	"github.com/ondat/operator-toolkit/operator/v1/operand"
+	"github.com/ondat/operator-toolkit/telemetry"
 )
 
 // defaultRetryPeriod is used for waiting before a retry.

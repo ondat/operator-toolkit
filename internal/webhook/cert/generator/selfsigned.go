@@ -23,7 +23,7 @@ import (
 	"fmt"
 	"time"
 
-	cert "github.com/darkowlzz/operator-toolkit/internal/pkiutil"
+	cert "github.com/ondat/operator-toolkit/internal/pkiutil"
 	certutil "k8s.io/client-go/util/cert"
 	"k8s.io/client-go/util/keyutil"
 )

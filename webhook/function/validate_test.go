@@ -7,7 +7,7 @@ import (
 	. "github.com/onsi/gomega"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	tdv1alpha1 "github.com/darkowlzz/operator-toolkit/testdata/api/v1alpha1"
+	tdv1alpha1 "github.com/ondat/operator-toolkit/testdata/api/v1alpha1"
 )
 
 var _ = Describe("ValidateSingletonCreate", func() {

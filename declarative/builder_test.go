@@ -5,9 +5,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/darkowlzz/operator-toolkit/declarative/kustomize"
-	"github.com/darkowlzz/operator-toolkit/declarative/loader"
-	"github.com/darkowlzz/operator-toolkit/declarative/transform"
+	"github.com/ondat/operator-toolkit/declarative/kustomize"
+	"github.com/ondat/operator-toolkit/declarative/loader"
+	"github.com/ondat/operator-toolkit/declarative/transform"
 )
 
 func TestNewBuilder(t *testing.T) {

@@ -1,10 +1,10 @@
-module github.com/darkowlzz/operator-toolkit/example
+module github.com/ondat/operator-toolkit/example
 
 go 1.16
 
 require (
-	github.com/darkowlzz/operator-toolkit v0.0.0
 	github.com/go-logr/logr v0.3.0
+	github.com/ondat/operator-toolkit v0.0.0
 	github.com/onsi/ginkgo v1.14.1
 	github.com/onsi/gomega v1.10.2
 	github.com/pkg/errors v0.9.1
@@ -16,4 +16,4 @@ require (
 	sigs.k8s.io/kustomize/api v0.7.0
 )
 
-replace github.com/darkowlzz/operator-toolkit => ../
+replace github.com/ondat/operator-toolkit => ../

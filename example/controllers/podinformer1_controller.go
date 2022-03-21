@@ -3,8 +3,8 @@ package controllers
 import (
 	"context"
 
-	"github.com/darkowlzz/operator-toolkit/source"
-	"github.com/darkowlzz/operator-toolkit/telemetry"
+	"github.com/ondat/operator-toolkit/source"
+	"github.com/ondat/operator-toolkit/telemetry"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"

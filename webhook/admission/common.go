@@ -5,7 +5,7 @@ import (
 	"go.opentelemetry.io/otel/trace"
 	admissionv1 "k8s.io/api/admission/v1"
 
-	"github.com/darkowlzz/operator-toolkit/constant"
+	"github.com/ondat/operator-toolkit/constant"
 )
 
 // Name of the tracer.

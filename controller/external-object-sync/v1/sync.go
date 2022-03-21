@@ -4,11 +4,11 @@ import (
 	"context"
 	"time"
 
-	syncv1 "github.com/darkowlzz/operator-toolkit/controller/sync/v1"
+	syncv1 "github.com/ondat/operator-toolkit/controller/sync/v1"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/darkowlzz/operator-toolkit/object"
+	"github.com/ondat/operator-toolkit/object"
 )
 
 const (

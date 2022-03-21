@@ -20,7 +20,7 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/darkowlzz/operator-toolkit/internal/webhook/cert/generator"
+	"github.com/ondat/operator-toolkit/internal/webhook/cert/generator"
 )
 
 // CertGenerator is a certGenerator for testing.

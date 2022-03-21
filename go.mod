@@ -1,4 +1,4 @@
-module github.com/darkowlzz/operator-toolkit
+module github.com/ondat/operator-toolkit
 
 go 1.16
 

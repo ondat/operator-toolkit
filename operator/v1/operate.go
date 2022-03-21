@@ -7,7 +7,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/darkowlzz/operator-toolkit/constant"
+	"github.com/ondat/operator-toolkit/constant"
 )
 
 // Name of the instrumentation.

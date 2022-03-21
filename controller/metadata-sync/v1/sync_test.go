@@ -13,10 +13,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 
-	"github.com/darkowlzz/operator-toolkit/controller/metadata-sync/v1/mocks"
-	syncv1 "github.com/darkowlzz/operator-toolkit/controller/sync/v1"
-	"github.com/darkowlzz/operator-toolkit/object"
-	tdv1alpha1 "github.com/darkowlzz/operator-toolkit/testdata/api/v1alpha1"
+	"github.com/ondat/operator-toolkit/controller/metadata-sync/v1/mocks"
+	syncv1 "github.com/ondat/operator-toolkit/controller/sync/v1"
+	"github.com/ondat/operator-toolkit/object"
+	tdv1alpha1 "github.com/ondat/operator-toolkit/testdata/api/v1alpha1"
 )
 
 func TestResync(t *testing.T) {

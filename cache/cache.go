@@ -7,7 +7,7 @@ import (
 	"k8s.io/kubectl/pkg/scheme"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 
-	"github.com/darkowlzz/operator-toolkit/cache/informer"
+	"github.com/ondat/operator-toolkit/cache/informer"
 )
 
 // Options are the optional arguments for creating a new InformersMap object.

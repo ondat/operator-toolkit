@@ -9,7 +9,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/apiutil"
 
-	"github.com/darkowlzz/operator-toolkit/object"
+	"github.com/ondat/operator-toolkit/object"
 )
 
 // GetInstanceFunc is a function type for functions that return an instance of

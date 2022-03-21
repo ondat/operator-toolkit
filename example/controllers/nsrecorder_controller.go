@@ -13,9 +13,9 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	actionv1 "github.com/darkowlzz/operator-toolkit/controller/stateless-action/v1"
-	"github.com/darkowlzz/operator-toolkit/controller/stateless-action/v1/action"
-	"github.com/darkowlzz/operator-toolkit/telemetry"
+	actionv1 "github.com/ondat/operator-toolkit/controller/stateless-action/v1"
+	"github.com/ondat/operator-toolkit/controller/stateless-action/v1/action"
+	"github.com/ondat/operator-toolkit/telemetry"
 )
 
 const (

@@ -1,7 +1,7 @@
 domain: example.com
 layout: go.kubebuilder.io/v3
 projectName: example
-repo: github.com/darkowlzz/operator-toolkit/example
+repo: github.com/ondat/operator-toolkit/example
 resources:
 - api:
     crdVersion: v1
@@ -9,7 +9,7 @@ resources:
   domain: example.com
   group: app
   kind: Game
-  path: github.com/darkowlzz/operator-toolkit/example/api/v1alpha1
+  path: github.com/ondat/operator-toolkit/example/api/v1alpha1
   version: v1alpha1
   webhooks:
     defaulting: true

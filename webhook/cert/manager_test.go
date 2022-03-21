@@ -18,7 +18,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
-	"github.com/darkowlzz/operator-toolkit/internal/pkiutil"
+	"github.com/ondat/operator-toolkit/internal/pkiutil"
 )
 
 // getTestResources returns the basic objects required in cert manager tests.

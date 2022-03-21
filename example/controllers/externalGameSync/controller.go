@@ -3,7 +3,7 @@ package externalGameSync
 import (
 	"context"
 
-	syncv1 "github.com/darkowlzz/operator-toolkit/controller/sync/v1"
+	syncv1 "github.com/ondat/operator-toolkit/controller/sync/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )

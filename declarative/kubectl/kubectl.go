@@ -5,8 +5,8 @@ import (
 
 	"k8s.io/cli-runtime/pkg/genericclioptions"
 
-	"github.com/darkowlzz/operator-toolkit/declarative/applier"
-	"github.com/darkowlzz/operator-toolkit/declarative/deleter"
+	"github.com/ondat/operator-toolkit/declarative/applier"
+	"github.com/ondat/operator-toolkit/declarative/deleter"
 )
 
 // KubectlClient defines an interface for a kubernetes client that can be used

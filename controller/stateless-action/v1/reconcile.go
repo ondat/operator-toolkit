@@ -14,10 +14,10 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/darkowlzz/operator-toolkit/constant"
-	tkctrl "github.com/darkowlzz/operator-toolkit/controller"
-	"github.com/darkowlzz/operator-toolkit/controller/stateless-action/v1/action"
-	"github.com/darkowlzz/operator-toolkit/telemetry"
+	"github.com/ondat/operator-toolkit/constant"
+	tkctrl "github.com/ondat/operator-toolkit/controller"
+	"github.com/ondat/operator-toolkit/controller/stateless-action/v1/action"
+	"github.com/ondat/operator-toolkit/telemetry"
 )
 
 // Name of the instrumentation.

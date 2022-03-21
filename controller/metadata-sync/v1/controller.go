@@ -1,13 +1,13 @@
 package v1
 
-//go:generate mockgen -destination=mocks/mock_controller.go -package=mocks github.com/darkowlzz/operator-toolkit/controller/metadata-sync/v1 Controller
+//go:generate mockgen -destination=mocks/mock_controller.go -package=mocks github.com/ondat/operator-toolkit/controller/metadata-sync/v1 Controller
 
 import (
 	"context"
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	syncv1 "github.com/darkowlzz/operator-toolkit/controller/sync/v1"
+	syncv1 "github.com/ondat/operator-toolkit/controller/sync/v1"
 )
 
 // Controller is a metadata sync controller interface that must be implemented

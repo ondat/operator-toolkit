@@ -9,7 +9,7 @@ import (
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/tools/cache"
 
-	"github.com/darkowlzz/operator-toolkit/cache/informer"
+	"github.com/ondat/operator-toolkit/cache/informer"
 )
 
 // ListWatcherClient defines an interface for a list watcher client.

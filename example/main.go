@@ -28,10 +28,10 @@ import (
 	// to ensure that exec-entrypoint and run can make use of them.
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 
-	extcache "github.com/darkowlzz/operator-toolkit/cache"
-	"github.com/darkowlzz/operator-toolkit/telemetry"
-	"github.com/darkowlzz/operator-toolkit/telemetry/export"
-	"github.com/darkowlzz/operator-toolkit/webhook/cert"
+	extcache "github.com/ondat/operator-toolkit/cache"
+	"github.com/ondat/operator-toolkit/telemetry"
+	"github.com/ondat/operator-toolkit/telemetry/export"
+	"github.com/ondat/operator-toolkit/webhook/cert"
 	admissionregistrationv1 "k8s.io/api/admissionregistration/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -48,8 +48,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	appv1alpha1 "github.com/darkowlzz/operator-toolkit/example/api/v1alpha1"
-	"github.com/darkowlzz/operator-toolkit/example/controllers"
+	appv1alpha1 "github.com/ondat/operator-toolkit/example/api/v1alpha1"
+	"github.com/ondat/operator-toolkit/example/controllers"
 	//+kubebuilder:scaffold:imports
 )
 

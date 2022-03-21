@@ -9,7 +9,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	tkctrl "github.com/darkowlzz/operator-toolkit/controller"
+	tkctrl "github.com/ondat/operator-toolkit/controller"
 )
 
 func (s *Reconciler) Reconcile(ctx context.Context, req ctrl.Request) (result ctrl.Result, reterr error) {

@@ -13,10 +13,10 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	eventv1 "github.com/darkowlzz/operator-toolkit/event/v1"
-	"github.com/darkowlzz/operator-toolkit/operator/v1/executor"
-	"github.com/darkowlzz/operator-toolkit/operator/v1/operand"
-	"github.com/darkowlzz/operator-toolkit/operator/v1/operand/mocks"
+	eventv1 "github.com/ondat/operator-toolkit/event/v1"
+	"github.com/ondat/operator-toolkit/operator/v1/executor"
+	"github.com/ondat/operator-toolkit/operator/v1/operand"
+	"github.com/ondat/operator-toolkit/operator/v1/operand/mocks"
 )
 
 // fooCreatedEvent is a ReconcilerEvent type used for testing event

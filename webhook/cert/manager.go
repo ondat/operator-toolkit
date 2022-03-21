@@ -25,9 +25,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
-	webhookcert "github.com/darkowlzz/operator-toolkit/internal/webhook/cert"
-	"github.com/darkowlzz/operator-toolkit/internal/webhook/cert/generator"
-	"github.com/darkowlzz/operator-toolkit/internal/webhook/cert/writer"
+	webhookcert "github.com/ondat/operator-toolkit/internal/webhook/cert"
+	"github.com/ondat/operator-toolkit/internal/webhook/cert/generator"
+	"github.com/ondat/operator-toolkit/internal/webhook/cert/writer"
 )
 
 var log = ctrl.Log.WithName("webhook").WithName("cert").WithName("manager")

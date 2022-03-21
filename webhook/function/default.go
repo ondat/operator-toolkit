@@ -3,8 +3,8 @@ package function
 import (
 	"context"
 
-	"github.com/darkowlzz/operator-toolkit/discovery/cluster"
-	"github.com/darkowlzz/operator-toolkit/webhook/admission"
+	"github.com/ondat/operator-toolkit/discovery/cluster"
+	"github.com/ondat/operator-toolkit/webhook/admission"
 	"k8s.io/client-go/discovery"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )

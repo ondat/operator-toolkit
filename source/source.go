@@ -17,7 +17,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/runtime/inject"
 	"sigs.k8s.io/controller-runtime/pkg/source"
 
-	"github.com/darkowlzz/operator-toolkit/source/internal"
+	"github.com/ondat/operator-toolkit/source/internal"
 )
 
 // NewKindWithCache creates a Source without InjectCache, so that it is assured that the given cache is used
