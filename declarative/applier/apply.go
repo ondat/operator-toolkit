@@ -73,5 +73,15 @@ func (d *DirectApplier) Apply(ctx context.Context,
 		IOStreams: d.ioStreams,
 	}
 
+	if len(extraArgs) != 0 {
+		for _, opt := range extraArgs {
+			switch opt {
+			case "server-side":
+				applyOpts.ServerSideApply = true
+				applyOpts.FieldManager = "kubectl"
+			}
+		}
+	}
+
 	return applyOpts.Run()
 }
