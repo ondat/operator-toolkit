@@ -184,6 +184,7 @@ func (co *CompositeOperator) Cleanup(ctx context.Context, obj client.Object) (re
 	defer span.End()
 
 	if !co.IsSuspended(ctx, obj) {
+		defer co.order.Reverse()
 		return co.executor.ExecuteOperands(co.order.Reverse(), operand.CallCleanup, ctx, obj, metav1.OwnerReference{})
 	}
 	return
