@@ -253,7 +253,7 @@ func TestReconcile(t *testing.T) {
 				m.EXPECT().Default(gomock.Any(), gomock.Any())
 				m.EXPECT().Validate(gomock.Any(), gomock.Any()).Return(nil)
 			},
-			wantResult: ctrl.Result{},
+			wantResult: ctrl.Result{Requeue: true},
 		},
 		{
 			name:         "finalizer cleanup failure",
@@ -297,7 +297,7 @@ func TestReconcile(t *testing.T) {
 				m.EXPECT().Validate(gomock.Any(), gomock.Any()).Return(nil)
 				m.EXPECT().Cleanup(gomock.Any(), gomock.Any())
 			},
-			wantResult: ctrl.Result{},
+			wantResult: ctrl.Result{Requeue: true},
 		},
 	}
 

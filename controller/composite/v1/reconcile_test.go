@@ -50,6 +50,7 @@ func TestCleanupHandler(t *testing.T) {
 			},
 			wantFinalizers: []string{finalizerName},
 			wantUpdated:    true,
+			wantResult:     ctrl.Result{Requeue: true},
 			expectations:   func(m *mocks.MockController) {},
 		},
 		{
@@ -91,6 +92,7 @@ func TestCleanupHandler(t *testing.T) {
 			wantFinalizers: []string{someFinalizerX},
 			wantDelEnabled: true,
 			wantUpdated:    true,
+			wantResult:     ctrl.Result{Requeue: true},
 			expectations: func(m *mocks.MockController) {
 				m.EXPECT().Cleanup(gomock.Any(), gomock.Any())
 			},
@@ -120,6 +122,7 @@ func TestCleanupHandler(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			// Create a fake client with some existing objects.
 			cli := fake.NewClientBuilder().
+				WithObjects(tc.obj).
 				WithScheme(scheme).
 				Build()
 
