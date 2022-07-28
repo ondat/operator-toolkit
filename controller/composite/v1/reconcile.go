@@ -172,11 +172,13 @@ func (c *CompositeReconciler) cleanupHandler(ctx context.Context, obj client.Obj
 		if !controllerutil.ContainsFinalizer(obj, c.finalizerName) {
 			span.AddEvent("Finalizer not found, updating object to add finalizer")
 			controllerutil.AddFinalizer(obj, c.finalizerName)
-			if updateErr := c.client.Update(ctx, obj); updateErr != nil {
-				log.Error(updateErr, "failed to add finalizer")
+			if reterr = c.client.Update(ctx, obj); reterr != nil {
+				log.Error(reterr, "failed to add finalizer")
+			} else {
+				// Mark API object update.
+				updated = true
+				result = ctrl.Result{Requeue: true}
 			}
-			// Mark API object update.
-			updated = true
 		} else {
 			span.AddEvent("Finalizer exists, no-op")
 		}
@@ -194,11 +196,13 @@ func (c *CompositeReconciler) cleanupHandler(ctx context.Context, obj client.Obj
 				// Cleanup successful, remove the finalizer.
 				span.AddEvent("Cleanup completed, remove finalizer")
 				controllerutil.RemoveFinalizer(obj, c.finalizerName)
-				if updateErr := c.client.Update(ctx, obj); updateErr != nil {
-					log.Error(updateErr, "failed to remove finalizer")
+				if reterr = c.client.Update(ctx, obj); reterr != nil {
+					log.Error(reterr, "failed to remove finalizer")
+				} else {
+					// Mark API object update.
+					updated = true
+					result = ctrl.Result{Requeue: true}
 				}
-				// Mark API object update.
-				updated = true
 			}
 		} else {
 			span.AddEvent("Finalizer not found, no-op")
