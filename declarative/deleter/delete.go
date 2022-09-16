@@ -3,7 +3,6 @@ package deleter
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"github.com/pkg/errors"
@@ -70,7 +69,7 @@ func (d *DirectDeleter) Delete(ctx context.Context, namespace string, manifest s
 	// refactoring can help get around this easily, similar to the applier, and
 	// resource objects can be easily constructed from a stream and consumed by
 	// the delete runner.
-	file, err := ioutil.TempFile("", "delete-*.yaml")
+	file, err := os.CreateTemp("", "delete-*.yaml")
 	if err != nil {
 		return errors.Wrapf(err, "failed to create manifest %q", file.Name())
 	}

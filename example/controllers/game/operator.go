@@ -7,7 +7,7 @@ import (
 	"github.com/ondat/operator-toolkit/operator/v1/executor"
 	"github.com/ondat/operator-toolkit/operator/v1/operand"
 	ctrl "sigs.k8s.io/controller-runtime"
-	"sigs.k8s.io/kustomize/api/filesys"
+	"sigs.k8s.io/kustomize/kyaml/filesys"
 )
 
 // NewOperator creates and returns a CompositeOperator with all the operands

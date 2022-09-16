@@ -2,7 +2,7 @@ package deleter
 
 import (
 	"context"
-	"io/ioutil"
+	"io"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -22,8 +22,8 @@ metadata:
   name: toolkit-test-ns
 `
 	ioStreams := genericclioptions.IOStreams{
-		Out:    ioutil.Discard,
-		ErrOut: ioutil.Discard,
+		Out:    io.Discard,
+		ErrOut: io.Discard,
 	}
 
 	// Use the applier to create the namespace.

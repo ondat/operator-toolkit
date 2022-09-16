@@ -3,11 +3,10 @@ package loader
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
-	"sigs.k8s.io/kustomize/api/filesys"
+	"sigs.k8s.io/kustomize/kyaml/filesys"
 )
 
 // ManifestFileSystem is a wrapper around the kustomize filesys.Filesystem with
@@ -20,7 +19,7 @@ type ManifestFileSystem struct {
 // CopyDirectory recursively copies directory content from disk filesystem to
 // the manifest filesystem.
 func (mfs *ManifestFileSystem) CopyDirectory(srcDir, dest string) error {
-	entries, err := ioutil.ReadDir(srcDir)
+	entries, err := os.ReadDir(srcDir)
 	if err != nil {
 		return err
 	}

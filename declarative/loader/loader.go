@@ -2,11 +2,11 @@ package loader
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/loaders"
-	"sigs.k8s.io/kustomize/api/filesys"
+	"sigs.k8s.io/kustomize/kyaml/filesys"
 	"sigs.k8s.io/yaml"
 )
 
@@ -62,7 +62,7 @@ func LoadPackages(fs *ManifestFileSystem, baseDir string, channel string) error 
 
 	// Read the channel.
 	p := filepath.Join(baseDir, channel)
-	b, err := ioutil.ReadFile(filepath.Clean(p))
+	b, err := os.ReadFile(filepath.Clean(p))
 	if err != nil {
 		return fmt.Errorf("failed to read file %q: %w", p, err)
 	}

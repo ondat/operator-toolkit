@@ -7,7 +7,7 @@ import (
 	"go.opentelemetry.io/otel"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/kustomize/api/filesys"
+	"sigs.k8s.io/kustomize/kyaml/filesys"
 
 	"github.com/ondat/operator-toolkit/declarative"
 	"github.com/ondat/operator-toolkit/declarative/kustomize"

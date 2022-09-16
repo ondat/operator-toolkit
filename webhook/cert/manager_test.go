@@ -2,7 +2,6 @@ package cert
 
 import (
 	"context"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
@@ -79,7 +78,7 @@ func TestManager(t *testing.T) {
 	// Create a fake client with the webhook configurations.
 	cli := fake.NewClientBuilder().WithScheme(tscheme).WithObjects(mutatingWebhookConfig, validatingWebhookConfig, crd).Build()
 
-	certDir, err := ioutil.TempDir("", "cert-test")
+	certDir, err := os.MkdirTemp("", "cert-test")
 	assert.Nil(t, err)
 	defer os.RemoveAll(certDir)
 
@@ -156,11 +155,11 @@ func TestMultipleManagers(t *testing.T) {
 	cli := fake.NewClientBuilder().WithScheme(tscheme).WithObjects(mutatingWebhookConfig, validatingWebhookConfig, crd).Build()
 
 	// Create two cert dirs for the two managers.
-	certDir1, err := ioutil.TempDir("", "cert-test")
+	certDir1, err := os.MkdirTemp("", "cert-test")
 	assert.Nil(t, err)
 	defer os.RemoveAll(certDir1)
 
-	certDir2, err := ioutil.TempDir("", "cert-test")
+	certDir2, err := os.MkdirTemp("", "cert-test")
 	assert.Nil(t, err)
 	defer os.RemoveAll(certDir2)
 
@@ -193,9 +192,9 @@ func TestMultipleManagers(t *testing.T) {
 
 	// Compare the certs written by the managers.
 	contentCheck := func(path1, path2 string) {
-		c1, err := ioutil.ReadFile(path1)
+		c1, err := os.ReadFile(path1)
 		assert.Nil(t, err)
-		c2, err := ioutil.ReadFile(path2)
+		c2, err := os.ReadFile(path2)
 		assert.Nil(t, err)
 		assert.Equal(t, c1, c2)
 	}
