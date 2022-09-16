@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
-	"sigs.k8s.io/kustomize/api/filesys"
 	"sigs.k8s.io/kustomize/api/konfig"
+	"sigs.k8s.io/kustomize/kyaml/filesys"
 
 	"github.com/ondat/operator-toolkit/declarative/kubectl"
 	"github.com/ondat/operator-toolkit/declarative/kustomize"
