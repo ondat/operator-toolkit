@@ -80,7 +80,9 @@ func (d *DirectDeleter) Delete(ctx context.Context, namespace string, manifest s
 	if err != nil {
 		return errors.Wrapf(err, "failed to write manifest %q", file.Name())
 	}
-	file.Close()
+	if err = file.Close(); err != nil {
+		println("Unable to close file: " + file.Name())
+	}
 
 	fopts := resource.FilenameOptions{
 		Filenames: []string{file.Name()},
