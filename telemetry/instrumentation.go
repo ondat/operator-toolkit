@@ -33,9 +33,6 @@ func NewInstrumentationWithProviders(name string, tp trace.TracerProvider, mp me
 	if mp == nil {
 		mp = global.GetMeterProvider()
 	}
-	if log == nil {
-		log = ctrl.Log
-	}
 	return &Instrumentation{
 		trace:  tp.Tracer(name),
 		metric: mp.Meter(name),
@@ -58,5 +55,5 @@ func (i *Instrumentation) Start(ctx context.Context, name string, opts ...trace.
 	ctx, span := i.trace.Start(ctx, name, opts...)
 	// Use the created span to create a tracing logger with the span name.
 	tl := tracing.NewLogger(i.log.WithValues("spanName", name), span)
-	return ctx, span, i.metric, tl
+	return ctx, span, i.metric, logr.New(tl)
 }
