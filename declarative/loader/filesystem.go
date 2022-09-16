@@ -68,7 +68,7 @@ func (mfs *ManifestFileSystem) Copy(srcFile, dstFile string) (err error) {
 		}
 	}()
 
-	in, oErr := os.Open(srcFile)
+	in, oErr := os.Open(filepath.Clean(srcFile))
 	defer func() {
 		if cErr := in.Close(); cErr != nil {
 			err = cErr

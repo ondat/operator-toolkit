@@ -297,10 +297,10 @@ func (m *Manager) writeCertOnDisk(ctx context.Context) error {
 		return err
 	}
 
-	if err := ioutil.WriteFile(filepath.Join(m.CertDir, m.CertName), cert, 0666); err != nil {
+	if err := ioutil.WriteFile(filepath.Join(m.CertDir, m.CertName), cert, 0600); err != nil {
 		return err
 	}
-	if err := ioutil.WriteFile(filepath.Join(m.CertDir, m.KeyName), key, 0666); err != nil {
+	if err := ioutil.WriteFile(filepath.Join(m.CertDir, m.KeyName), key, 0600); err != nil {
 		return err
 	}
 

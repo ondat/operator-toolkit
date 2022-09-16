@@ -9,9 +9,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v2.3.0
+        uses: golangci/golangci-lint-action@2.3.0
         with:
           args: --timeout=5m
+
+  gosec:
+    name: gosec
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: gosec
+        uses: securego/gosec@v2.13.1
+        with: 
+          args: "-exclude-dir=example -exclude-generated ./..."
 
   go-test:
     name: go tests

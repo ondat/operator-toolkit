@@ -3,7 +3,7 @@ package informer
 import (
 	"context"
 	"fmt"
-	"math/rand"
+	"math/rand" //#nosec
 	"sync"
 	"time"
 
@@ -204,6 +204,7 @@ func (m *InformersMap) addInformerToMap(gvk schema.GroupVersionKind, obj runtime
 func resyncPeriod(resync time.Duration) func() time.Duration {
 	return func() time.Duration {
 		// the factor will fall into [0.9, 1.1)
+		/* #nosec */
 		factor := rand.Float64()/5.0 + 0.9
 		return time.Duration(float64(resync.Nanoseconds()) * factor)
 	}

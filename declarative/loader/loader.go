@@ -62,7 +62,7 @@ func LoadPackages(fs *ManifestFileSystem, baseDir string, channel string) error 
 
 	// Read the channel.
 	p := filepath.Join(baseDir, channel)
-	b, err := ioutil.ReadFile(p)
+	b, err := ioutil.ReadFile(filepath.Clean(p))
 	if err != nil {
 		return fmt.Errorf("failed to read file %q: %w", p, err)
 	}
