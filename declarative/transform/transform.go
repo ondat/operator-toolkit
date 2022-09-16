@@ -8,7 +8,7 @@ import (
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
-	"sigs.k8s.io/kustomize/api/filesys"
+	"sigs.k8s.io/kustomize/kyaml/filesys"
 	"sigs.k8s.io/kustomize/kyaml/yaml"
 )
 
@@ -66,10 +66,7 @@ func Transform(fs filesys.FileSystem, manifestTransform ManifestTransform, commo
 func AddLabelsFunc(labels map[string]string) TransformFunc {
 	return func(obj *yaml.RNode) error {
 		// Get existing labels.
-		l, err := obj.GetLabels()
-		if err != nil {
-			return err
-		}
+		l := obj.GetLabels()
 		if l == nil {
 			l = map[string]string{}
 		}
@@ -92,10 +89,7 @@ func AddLabelsFunc(labels map[string]string) TransformFunc {
 func AddAnnotationsFunc(annotations map[string]string) TransformFunc {
 	return func(obj *yaml.RNode) error {
 		// Get existing annotations.
-		a, err := obj.GetAnnotations()
-		if err != nil {
-			return err
-		}
+		a := obj.GetAnnotations()
 		if a == nil {
 			a = map[string]string{}
 		}

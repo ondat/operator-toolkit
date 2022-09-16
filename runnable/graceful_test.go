@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	ctrl "sigs.k8s.io/controller-runtime"
 )
 
 func TestGraceful(t *testing.T) {
@@ -27,7 +28,7 @@ func TestGraceful(t *testing.T) {
 	var wg sync.WaitGroup
 
 	wg.Add(1)
-	gr := NewGraceful(start, stop, false, &wg, nil)
+	gr := NewGraceful(start, stop, false, &wg, ctrl.Log.WithName("graceful-runnable"))
 
 	// Create a context to stop the component with.
 	ctx, cancelFunc := context.WithCancel(context.TODO())

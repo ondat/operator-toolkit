@@ -106,7 +106,7 @@ func WithScheme(scheme *runtime.Scheme) CompositeReconcilerOption {
 // CompositeReconciler.
 func WithInstrumentation(tp trace.TracerProvider, mp metric.MeterProvider, log logr.Logger) CompositeReconcilerOption {
 	return func(c *CompositeReconciler) {
-		if log != nil && c.name != "" {
+		if c.name != "" {
 			log = log.WithValues("reconciler", c.name)
 		}
 		c.inst = telemetry.NewInstrumentationWithProviders(instrumentationName, tp, mp, log)

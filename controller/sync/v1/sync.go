@@ -68,7 +68,7 @@ func WithSyncFuncs(sf []SyncFunc) ReconcilerOption {
 // WithInstrumentation configures the instrumentation of the Reconciler.
 func WithInstrumentation(tp trace.TracerProvider, mp metric.MeterProvider, log logr.Logger) ReconcilerOption {
 	return func(s *Reconciler) {
-		if log != nil && s.Name != "" {
+		if s.Name != "" {
 			log = log.WithValues("reconciler", s.Name)
 		}
 		s.Inst = telemetry.NewInstrumentationWithProviders(instrumentationName, tp, mp, log)

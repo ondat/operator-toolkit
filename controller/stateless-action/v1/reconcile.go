@@ -69,7 +69,7 @@ func WithScheme(scheme *runtime.Scheme) ReconcilerOption {
 func WithInstrumentation(tp trace.TracerProvider, mp metric.MeterProvider, log logr.Logger) ReconcilerOption {
 	return func(r *Reconciler) {
 		// Populate the instrumentation with reconciler data.
-		if log != nil && r.name != "" {
+		if r.name != "" {
 			log = log.WithValues("reconciler", r.name)
 		}
 		r.inst = telemetry.NewInstrumentationWithProviders(instrumentationName, tp, mp, log)

@@ -41,8 +41,8 @@ func NewLogger(logger logr.Logger, span trace.Span) *TracingLogger {
 }
 
 // Info implements the Logger interface.
-func (t TracingLogger) Info(msg string, keysAndValues ...interface{}) {
-	t.Logger.Info(msg, keysAndValues...)
+func (t TracingLogger) Info(level int, msg string, keysAndValues ...interface{}) {
+	t.Logger.V(level).Info(msg, keysAndValues...)
 	kvs := append(
 		[]attribute.KeyValue{
 			attribute.String(messageKey, msg),
@@ -66,19 +66,29 @@ func (t TracingLogger) Error(err error, msg string, keysAndValues ...interface{}
 	t.Span.SetStatus(codes.Error, err.Error())
 }
 
+// Enabled implements the Logger interface.
+func (t TracingLogger) Init(info logr.RuntimeInfo) {
+	t.Logger.GetSink().Init(info)
+}
+
+// Enabled implements the Logger interface.
+func (t TracingLogger) Enabled(level int) bool {
+	return t.Logger.V(level).Enabled()
+}
+
 // V implements the Logger interface.
-func (t TracingLogger) V(level int) logr.Logger {
+func (t TracingLogger) V(level int) logr.LogSink {
 	return TracingLogger{Logger: t.Logger.V(level), Span: t.Span}
 }
 
 // WithValues implements the Logger interface.
-func (t TracingLogger) WithValues(keysAndValues ...interface{}) logr.Logger {
+func (t TracingLogger) WithValues(keysAndValues ...interface{}) logr.LogSink {
 	t.Span.SetAttributes(keyValues(keysAndValues...)...)
 	return TracingLogger{Logger: t.Logger.WithValues(keysAndValues...), Span: t.Span}
 }
 
 // WithName implements the Logger interface.
-func (t TracingLogger) WithName(name string) logr.Logger {
+func (t TracingLogger) WithName(name string) logr.LogSink {
 	t.Span.SetAttributes(attribute.String("name", name))
 	return TracingLogger{Logger: t.Logger.WithName(name), Span: t.Span}
 }

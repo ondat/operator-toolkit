@@ -46,8 +46,20 @@ func (d *DirectDeleter) IOStreams(ioStreams genericclioptions.IOStreams) *Direct
 func (d *DirectDeleter) Delete(ctx context.Context, namespace string, manifest string, validate bool, extraArgs ...string) error {
 	// Create a new factory for the deleter.
 	restClient := genericclioptions.NewConfigFlags(true).WithDeprecatedPasswordFlag()
+
 	f := cmdutil.NewFactory(restClient)
-	_, err := f.Validator(validate)
+
+	dynamicClient, err := f.DynamicClient()
+	if err != nil {
+		return errors.Wrap(err, "dynamic client failed")
+	}
+
+	validateDirective := "ignore"
+	if validate {
+		validateDirective = "strict"
+	}
+
+	_, err = f.Validator(validateDirective, resource.NewQueryParamVerifier(dynamicClient, f.OpenAPIGetter(), resource.QueryParamDryRun))
 	if err != nil {
 		return errors.Wrap(err, "validation failed")
 	}
@@ -137,11 +149,7 @@ func complete(o *delete.DeleteOptions, f cmdutil.Factory, args []string) error {
 	if err != nil {
 		return err
 	}
-	discoveryClient, err := f.ToDiscoveryClient()
-	if err != nil {
-		return err
-	}
-	o.DryRunVerifier = resource.NewDryRunVerifier(dynamicClient, discoveryClient)
+	o.DryRunVerifier = resource.NewQueryParamVerifier(dynamicClient, f.OpenAPIGetter(), resource.QueryParamDryRun)
 
 	if len(o.Raw) == 0 {
 		r := f.NewBuilder().

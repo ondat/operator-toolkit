@@ -109,7 +109,7 @@ func NewCompositeOperator(opts ...CompositeOperatorOption) (*CompositeOperator, 
 	// If instrumentation is nil, create a new instrumentation with default
 	// providers.
 	if c.inst == nil {
-		WithInstrumentation(nil, nil, nil)(c)
+		WithInstrumentation(nil, nil, ctrl.Log)(c)
 	}
 
 	// Initialize the operator DAG.

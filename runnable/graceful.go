@@ -5,10 +5,7 @@ import (
 	"sync"
 
 	"github.com/go-logr/logr"
-	ctrl "sigs.k8s.io/controller-runtime"
 )
-
-var log = ctrl.Log.WithName("graceful-runnable")
 
 // RunCall starts a component.
 type RunCall func(context.Context) error
@@ -40,11 +37,6 @@ type Graceful struct {
 // NewGraceful creates a new graceful shutdown runnable. logger is optional.
 // Pass nil for the default logger.
 func NewGraceful(run RunCall, stop StopCall, requireLeaderElection bool, wg *sync.WaitGroup, logger logr.Logger) *Graceful {
-	// Use the default package logger if not provided.
-	if logger == nil {
-		logger = log
-	}
-
 	return &Graceful{
 		run:                   run,
 		stop:                  stop,

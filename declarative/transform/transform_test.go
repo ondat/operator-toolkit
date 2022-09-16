@@ -19,13 +19,13 @@ func TestSetOwnerReference(t *testing.T) {
 	targetFile := "registry/db.yaml"
 
 	ownerRefs := []metav1.OwnerReference{
-		metav1.OwnerReference{
+		{
 			APIVersion: "someapi/v1",
 			Kind:       "Somekind",
 			Name:       "somename",
 			UID:        "17d16671-513f-4026-9302-904fe90601cf",
 		},
-		metav1.OwnerReference{
+		{
 			APIVersion: "someotherapi/v1",
 			Kind:       "SomekindX",
 			Name:       "somenameX",
@@ -38,18 +38,18 @@ kind: DB
 metadata:
   name: test-db
   ownerReferences:
-    - apiVersion: someapi/v1
-      blockOwnerDeletion: false
-      controller: false
-      kind: Somekind
-      name: somename
-      uid: 17d16671-513f-4026-9302-904fe90601cf
-    - apiVersion: someotherapi/v1
-      blockOwnerDeletion: false
-      controller: false
-      kind: SomekindX
-      name: somenameX
-      uid: 58e31192-513f-4026-9302-904fe90601ca
+  - apiVersion: someapi/v1
+    blockOwnerDeletion: false
+    controller: false
+    kind: Somekind
+    name: somename
+    uid: 17d16671-513f-4026-9302-904fe90601cf
+  - apiVersion: someotherapi/v1
+    blockOwnerDeletion: false
+    controller: false
+    kind: SomekindX
+    name: somenameX
+    uid: 58e31192-513f-4026-9302-904fe90601ca
 `
 
 	manifestTransform := ManifestTransform{
@@ -115,12 +115,12 @@ func TestTransform(t *testing.T) {
 	}
 
 	wantOwnerRefs := `
-    - apiVersion: some-api-version
-      blockOwnerDeletion: false
-      controller: false
-      kind: some-kind
-      name: some-name
-      uid: 58e31192-513f-4026-9302-904fe90601ca
+  - apiVersion: some-api-version
+    blockOwnerDeletion: false
+    controller: false
+    kind: some-kind
+    name: some-name
+    uid: 58e31192-513f-4026-9302-904fe90601ca
 `
 
 	targetFileA := "guestbook/role.yaml"
@@ -155,7 +155,7 @@ func TestTransform(t *testing.T) {
 	checkLabelsAnnotationsAndOwnerRefs(t, fs, targetFileB, labels, nil, wantOwnerRefs)
 }
 
-func checkLabelsAnnotationsAndOwnerRefs(t *testing.T, fs *loader.ManifestFileSystem, file string, labels, annotations map[string]string, ownerRefs string) {
+func checkLabelsAnnotationsAndOwnerRefs(t *testing.T, fs *loader.ManifestFileSystem, file string, labels, annotations map[string]string, wantOwnerRefs string) {
 	// Read the file and check the results.
 	b, err := fs.ReadFile(file)
 	assert.Nil(t, err)
@@ -163,15 +163,13 @@ func checkLabelsAnnotationsAndOwnerRefs(t *testing.T, fs *loader.ManifestFileSys
 	assert.Nil(t, err)
 
 	// Check if the labels exist in the obtained object.
-	l, err := obj.GetLabels()
-	assert.Nil(t, err)
+	l := obj.GetLabels()
 	for k, v := range labels {
 		assert.Equal(t, v, l[k])
 	}
 
 	// Check if the annotations exist in the obtained object.
-	a, err := obj.GetAnnotations()
-	assert.Nil(t, err)
+	a := obj.GetAnnotations()
 	for k, v := range annotations {
 		assert.Equal(t, v, a[k])
 	}
@@ -179,5 +177,5 @@ func checkLabelsAnnotationsAndOwnerRefs(t *testing.T, fs *loader.ManifestFileSys
 	// NOTE: kyaml RNode objects don't have a method to get the owner
 	// reference. Perform string comparion for now. It may be possible to do a
 	// lookup of the metadata field and get owner reference for comparison.
-	assert.True(t, strings.Contains(string(b), ownerRefs))
+	assert.True(t, strings.Contains(string(b), wantOwnerRefs))
 }

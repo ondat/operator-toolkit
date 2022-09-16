@@ -15,12 +15,13 @@ import (
 
 // Builder builds a Controller.
 type Builder struct {
-	evntSrc     <-chan event.GenericEvent
-	hdler       handler.EventHandler
-	mgr         manager.Manager
-	ctrl        controller.Controller
-	ctrlOptions controller.Options
-	name        string
+	evntSrc          <-chan event.GenericEvent
+	hdler            handler.EventHandler
+	mgr              manager.Manager
+	ctrl             controller.Controller
+	ctrlOptions      controller.Options
+	ctrlOptionsGiven bool
+	name             string
 }
 
 // ControllerManagedBy returns a new controller builder that will be started by
@@ -45,6 +46,7 @@ func (blder *Builder) WithEventHandler(h handler.EventHandler) *Builder {
 // to empty.
 func (blder *Builder) WithOptions(options controller.Options) *Builder {
 	blder.ctrlOptions = options
+	blder.ctrlOptionsGiven = true
 	return blder
 }
 
@@ -112,7 +114,7 @@ func (blder *Builder) doController(r reconcile.Reconciler) error {
 	}
 
 	// Setup the logger.
-	if ctrlOptions.Log == nil {
+	if !blder.ctrlOptionsGiven {
 		ctrlOptions.Log = blder.mgr.GetLogger()
 	}
 

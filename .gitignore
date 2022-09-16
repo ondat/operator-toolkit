@@ -6,6 +6,9 @@
 *.dylib
 bin/
 
+# Generators
+gomock_reflect_*/
+
 # Test binary, built with `go test -c`
 *.test
 
