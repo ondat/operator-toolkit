@@ -10,6 +10,7 @@ $(shell mkdir $(BIN_PATH) &>/dev/null)
 export PATH := $(BIN_PATH):$(PATH)
 
 # KUBEBUILDER_ASSETS path is set as environment variable when running envtest.
+HUSKEY_BIN_VERSION = 0.2.5
 EARTHLY_BIN_VERSION = 0.6.23
 ENVTEST_BIN_VERSION = 1.21.4
 KUBEBUILDER_ASSETS = $(shell $(SETUP_ENVTEST) use -i -p path $(ENVTEST_BIN_VERSION))
@@ -46,6 +47,11 @@ clean:
 MOCKGEN = $(shell pwd)/bin/mockgen
 mockgen:
 	$(call go-get-tool,$(MOCKGEN),github.com/golang/mock/mockgen@latest)
+
+HUSKY = $(shell pwd)/bin/husky
+.PHONY: husky
+husky: ## Download husky locally if necessary.
+	$(call go-get-tool,$(HUSKY),github.com/automation-co/husky@v$(HUSKEY_BIN_VERSION))
 
 SETUP_ENVTEST = $(shell pwd)/bin/setup-envtest
 setup-envtest:
