@@ -8,28 +8,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v2.5.2
-        with:
-          args: --timeout=5m
+      - run: make lint
 
   gosec:
     name: gosec
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: gosec
-        uses: securego/gosec@v2.13.1
-        with: 
-          args: "-exclude-dir=example -exclude-generated ./..."
+      - run: make gosec
 
   go-test:
     name: go tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-go@v2
-        with:
-          go-version: '1.18.0'
-      - name: go-test
-        run: make test
+      - run: make test
