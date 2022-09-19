@@ -66,7 +66,7 @@ func (t TracingLogger) Error(err error, msg string, keysAndValues ...interface{}
 	t.Span.SetStatus(codes.Error, err.Error())
 }
 
-// Enabled implements the Logger interface.
+// Init calls sink's Init.
 func (t TracingLogger) Init(info logr.RuntimeInfo) {
 	t.Logger.GetSink().Init(info)
 }
