@@ -8,7 +8,7 @@ BIN_PATH = $(shell pwd)/bin
 export PATH := $(BIN_PATH):$(PATH)
 
 # KUBEBUILDER_ASSETS path is set as environment variable when running envtest.
-ENVTEST_BIN_VERSION = 1.19.2
+ENVTEST_BIN_VERSION = 1.21.4
 KUBEBUILDER_ASSETS = $(shell $(SETUP_ENVTEST) use -i -p path $(ENVTEST_BIN_VERSION))
 
 # Target directory for tests and test name.
