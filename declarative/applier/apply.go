@@ -5,7 +5,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/ondat/operator-toolkit/declarative/applier/helper"
 	"k8s.io/cli-runtime/pkg/genericclioptions"
 	"k8s.io/cli-runtime/pkg/printers"
 	"k8s.io/cli-runtime/pkg/resource"
@@ -62,14 +61,7 @@ func (d *DirectApplier) Apply(ctx context.Context,
 		return err
 	}
 
-	f := cmdutil.NewFactory(restClient)
-
-	applyFlags := apply.NewApplyFlags(f, d.ioStreams)
-
-	applyOpts, err := helper.ApplyFlagsToApplyOptions(applyFlags)
-	if err != nil {
-		return err
-	}
+	applyOpts := apply.NewApplyOptions(d.ioStreams)
 
 	applyOpts.Namespace = namespace
 	applyOpts.SetObjects(infos)
