@@ -29,5 +29,6 @@ gosec:
 
 test:
     FROM +deps
+    ENV ACK_GINKGO_DEPRECATIONS=1.16.5
     COPY . ./
     RUN make _test
