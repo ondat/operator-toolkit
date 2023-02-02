@@ -30,6 +30,7 @@ type CompositeOperator struct {
 	DAG               *dag.OperandDAG
 	isSuspended       func(context.Context, client.Object) bool
 	order             operand.OperandOrder
+	blockers          operand.BlockingOperands
 	executionStrategy executor.ExecutionStrategy
 	recorder          record.EventRecorder
 	executor          *executor.Executor
@@ -94,6 +95,7 @@ func NewCompositeOperator(opts ...CompositeOperatorOption) (*CompositeOperator, 
 		isSuspended:       defaultIsSuspended,
 		executionStrategy: executor.Parallel,
 		retryPeriod:       defaultRetryPeriod,
+		blockers:          make(map[string]bool),
 	}
 
 	// Loop through each option.
@@ -126,6 +128,9 @@ func NewCompositeOperator(opts ...CompositeOperatorOption) (*CompositeOperator, 
 	}
 	c.order = order
 
+	// Find step blocking operands in the traversal order.
+	c.blockers = c.order.Blockers()
+
 	// Create an executor.
 	c.executor = executor.NewExecutor(c.executionStrategy, c.recorder)
 
@@ -137,6 +142,12 @@ func NewCompositeOperator(opts ...CompositeOperatorOption) (*CompositeOperator, 
 // reverse order.
 func (co *CompositeOperator) Order() operand.OperandOrder {
 	return co.order
+}
+
+// Blockers returns the names of the operands which are deemed blockers for
+// their respective steps in the OperandOrder for execution.
+func (co *CompositeOperator) Blockers() operand.BlockingOperands {
+	return co.blockers
 }
 
 // IsSuspend implements the Operator interface. It checks if the operator can
@@ -158,7 +169,7 @@ func (co *CompositeOperator) Ensure(ctx context.Context, obj client.Object, owne
 	result := ctrl.Result{}
 
 	if !co.IsSuspended(ctx, obj) {
-		res, err := co.executor.ExecuteOperands(co.order, operand.CallEnsure, ctx, obj, ownerRef)
+		res, err := co.executor.ExecuteOperands(co.order, co.blockers, operand.CallEnsure, ctx, obj, ownerRef)
 		if err != nil {
 			// Not ready error shouldn't be propagated to the caller. Handle
 			// the error gracefully by returning a requeue result with a wait
@@ -185,7 +196,7 @@ func (co *CompositeOperator) Cleanup(ctx context.Context, obj client.Object) (re
 
 	if !co.IsSuspended(ctx, obj) {
 		defer co.order.Reverse()
-		return co.executor.ExecuteOperands(co.order.Reverse(), operand.CallCleanup, ctx, obj, metav1.OwnerReference{})
+		return co.executor.ExecuteOperands(co.order.Reverse(), co.blockers, operand.CallCleanup, ctx, obj, metav1.OwnerReference{})
 	}
 	return
 }
