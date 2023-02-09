@@ -222,9 +222,14 @@ func TestCompositeOperatorEnsure(t *testing.T) {
 			// A, B, C and C requires A.
 			mA.EXPECT().Name().Return("opA").AnyTimes()
 			mA.EXPECT().Requires().Return([]string{})
+			mA.EXPECT().Requires().Return([]string{})
+
 			mB.EXPECT().Name().Return("opB").AnyTimes()
 			mB.EXPECT().Requires().Return([]string{})
+			mB.EXPECT().Requires().Return([]string{})
+
 			mC.EXPECT().Name().Return("opC").AnyTimes()
+			mC.EXPECT().Requires().Return([]string{"opA"})
 			mC.EXPECT().Requires().Return([]string{"opA"})
 
 			// Set the expectations on the mocked operands.

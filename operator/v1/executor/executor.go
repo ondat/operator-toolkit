@@ -78,7 +78,7 @@ func (exe *Executor) ExecuteOperands(
 		var res *ctrl.Result
 
 		// failedOperands are the operands that have failed during this step.
-		failedOperands := make(map[string]bool)
+		var failedOperands map[string]bool
 
 		requeueStrategy := operand.StepRequeueStrategy(ops)
 
