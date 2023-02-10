@@ -38,6 +38,20 @@ func (m *MockOperand) EXPECT() *MockOperandMockRecorder {
 	return m.recorder
 }
 
+// CleanupRequires mocks base method.
+func (m *MockOperand) CleanupRequires() []string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CleanupRequires")
+	ret0, _ := ret[0].([]string)
+	return ret0
+}
+
+// CleanupRequires indicates an expected call of CleanupRequires.
+func (mr *MockOperandMockRecorder) CleanupRequires() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CleanupRequires", reflect.TypeOf((*MockOperand)(nil).CleanupRequires))
+}
+
 // Delete mocks base method.
 func (m *MockOperand) Delete(arg0 context.Context, arg1 client.Object) (v1.ReconcilerEvent, error) {
 	m.ctrl.T.Helper()
