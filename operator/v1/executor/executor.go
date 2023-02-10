@@ -54,6 +54,7 @@ func NewExecutor(e ExecutionStrategy, r record.EventRecorder) *Executor {
 // call to Ensure or Delete.
 func (exe *Executor) ExecuteOperands(
 	order operand.OperandOrder,
+	blockers operand.BlockingOperands,
 	call operand.OperandRunCall,
 	ctx context.Context,
 	obj client.Object,
@@ -76,6 +77,9 @@ func (exe *Executor) ExecuteOperands(
 		// caller.
 		var res *ctrl.Result
 
+		// failedOperands are the operands that have failed during this step.
+		var failedOperands map[string]bool
+
 		requeueStrategy := operand.StepRequeueStrategy(ops)
 
 		span.AddEvent(
@@ -88,19 +92,25 @@ func (exe *Executor) ExecuteOperands(
 		switch exe.execStrategy {
 		case Serial:
 			// Run the operands serially.
-			res, execErr = exe.serialExec(ops, call, ctx, obj, ownerRef)
+			res, failedOperands, execErr = exe.serialExec(ops, call, ctx, obj, ownerRef)
 		case Parallel:
 			// Run the operands concurrently.
-			res, execErr = exe.concurrentExec(ops, call, ctx, obj, ownerRef)
+			res, failedOperands, execErr = exe.concurrentExec(ops, call, ctx, obj, ownerRef)
 		default:
 			rerr = fmt.Errorf("unknown operands execution strategy: %v", exe.execStrategy)
 			return
 		}
-
 		if execErr != nil {
+			rerr = kerrors.NewAggregate([]error{rerr, execErr})
+			// Check if any failed operands are also blocking operands.
+			// If so, we break (ie block the step) instead of proceeding to the next step.
+			// Otherwise, continue to the next step in the order.
+			// In either case, the result is to requeue.
 			result = ctrl.Result{Requeue: true}
-			rerr = execErr
-			break
+			if failuresContainBlockingOperand(failedOperands, blockers) {
+				break
+			}
+			continue
 		}
 
 		// If a change was made with a Result received after the execution and
@@ -116,6 +126,16 @@ func (exe *Executor) ExecuteOperands(
 	return
 }
 
+// failuresContainBlockingOperand returns true if a blocking operand is also a failed operand.
+func failuresContainBlockingOperand(failedOperands map[string]bool, blockers operand.BlockingOperands) bool {
+	for operandName, isBlocker := range blockers {
+		if failed, ok := failedOperands[operandName]; ok && failed && isBlocker {
+			return true
+		}
+	}
+	return false
+}
+
 // serialExec runs the given set of operands serially with the given call
 // function. An event is used to know if a change was applied. When an event is
 // found, a result object is returned, else nil.
@@ -125,11 +145,13 @@ func (exe *Executor) serialExec(
 	ctx context.Context,
 	obj client.Object,
 	ownerRef metav1.OwnerReference,
-) (result *ctrl.Result, rerr error) {
+) (result *ctrl.Result, failedOperands map[string]bool, rerr error) {
 	ctx, span, _, _ := exe.inst.Start(ctx, "serial-exec")
 	defer span.End()
 
 	result = nil
+
+	failedOperands = make(map[string]bool)
 
 	span.AddEvent(
 		"Execute serially",
@@ -141,11 +163,14 @@ func (exe *Executor) serialExec(
 			"Executing operand",
 			trace.WithAttributes(attribute.String("operand-name", op.Name())),
 		)
+		// Initially operand as not failed.
+		failedOperands[op.Name()] = false
 		// Call the run call function. Since this is serial execution, return
 		// if an error occurs.
 		event, err := call(op)(ctx, obj, ownerRef)
 		if err != nil {
 			rerr = kerrors.NewAggregate([]error{rerr, err})
+			failedOperands[op.Name()] = true
 			return
 		}
 		if event != nil {
@@ -167,11 +192,13 @@ func (exe *Executor) concurrentExec(
 	ctx context.Context,
 	obj client.Object,
 	ownerRef metav1.OwnerReference,
-) (result *ctrl.Result, rerr error) {
+) (result *ctrl.Result, failedOperands map[string]bool, rerr error) {
 	ctx, span, _, _ := exe.inst.Start(ctx, "concurrent-exec")
 	defer span.End()
 
 	result = nil
+
+	failedOperands = make(map[string]bool)
 
 	// Wait group to synchronize the go routines.
 	var wg sync.WaitGroup
@@ -185,6 +212,10 @@ func (exe *Executor) concurrentExec(
 	// Error buffered channel to collect all the errors from the go routines.
 	var errChan chan error = make(chan error, totalOperands)
 
+	// String buffered channel to collect the names of operands that have failed
+	// to execute.
+	var failedOperandChan chan string = make(chan string, totalOperands)
+
 	span.AddEvent(
 		"Execute concurrently",
 		trace.WithAttributes(attribute.Int("operand-count", len(ops))),
@@ -196,14 +227,22 @@ func (exe *Executor) concurrentExec(
 			"Executing operand",
 			trace.WithAttributes(attribute.String("operand-name", op.Name())),
 		)
-		go exe.operateWithWaitGroup(&wg, resultChan, errChan, call(op), ctx, obj, ownerRef)
+		// Initially set operand as not failed.
+		failedOperands[op.Name()] = false
+		go exe.operateWithWaitGroup(&wg, resultChan, failedOperandChan, errChan, call(op), ctx, obj, ownerRef, op.Name())
 	}
 	wg.Wait()
 	close(errChan)
+	close(failedOperandChan)
 
-	// Check if any errors were encountere.
+	// Check if any errors were encountered.
 	for err := range errChan {
 		rerr = kerrors.NewAggregate([]error{rerr, err})
+	}
+
+	// Set any failed operands to true.
+	for failedOperand := range failedOperandChan {
+		failedOperands[failedOperand] = true
 	}
 
 	// Check the result channel, if it contains any result, return a result
@@ -228,17 +267,20 @@ func (exe *Executor) concurrentExec(
 func (exe *Executor) operateWithWaitGroup(
 	wg *sync.WaitGroup,
 	resultChan chan ctrl.Result,
+	failedOperandChan chan string,
 	errChan chan error,
 	f func(context.Context, client.Object, metav1.OwnerReference) (eventv1.ReconcilerEvent, error),
 	ctx context.Context,
 	obj client.Object,
 	ownerRef metav1.OwnerReference,
+	operandName string,
 ) {
 	defer wg.Done()
 
 	event, err := f(ctx, obj, ownerRef)
 	if err != nil {
 		errChan <- err
+		failedOperandChan <- operandName
 	}
 
 	// Event is used to determine if a change took place. Send a result to the

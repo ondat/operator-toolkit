@@ -11,6 +11,13 @@ import (
 // contains the operands that can be run in parallel.
 type OperandOrder [][]Operand
 
+// BlockingOperands stores the names of operands that are considered as blocking
+// operands. A blocking operand is an operand that must be executed successully
+// to proceed to the next step in the OperandOrder. If every operand in step n+1
+// 'requires' an operand in step n, then that operand is deemed a blocking operand
+// to the completion of step n.
+type BlockingOperands map[string]bool
+
 // String implements the Stringer interface for OperandOrder.
 // Example string result:
 // [
@@ -45,6 +52,52 @@ func (o OperandOrder) Reverse() OperandOrder {
 		o[left], o[right] = o[right], o[left]
 	}
 	return o
+}
+
+// Blockers returns the BlockingOperands of the order.
+func (o OperandOrder) Blockers() BlockingOperands {
+	blockers := make(map[string]bool)
+	if len(o) == 1 {
+		// If there's only a single step, then there can be no blockers.
+		return blockers
+	}
+
+	for _, step := range o {
+		for _, blocker := range blockersInStep(step) {
+			blockers[blocker] = true
+		}
+	}
+	return blockers
+}
+
+// blockersInStep returns a slice of operand names from a single step
+// that are considered blockers.
+func blockersInStep(operands []Operand) []string {
+	if len(operands) == 0 {
+		return nil
+	} else if len(operands) == 1 {
+		// If there is only a single operand in a step,
+		// then return that step's required operands.
+		return operands[0].Requires()
+	}
+
+	blockers := operands[0].Requires()
+	for _, operand := range operands[1:] {
+		blockers = commonStringsInSlices(blockers, operand.Requires())
+	}
+	return blockers
+}
+
+func commonStringsInSlices(sliceA, sliceB []string) []string {
+	commonStrings := make([]string, 0)
+	for _, sliceAString := range sliceA {
+		for _, sliceBString := range sliceB {
+			if sliceAString == sliceBString {
+				commonStrings = append(commonStrings, sliceAString)
+			}
+		}
+	}
+	return commonStrings
 }
 
 // StepRequeueStrategy returns the requeue strategy of a step. By default, the
