@@ -14,9 +14,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/go-logr/logr"
-	"github.com/ondat/operator-toolkit/operator/v1/dag"
 	"github.com/ondat/operator-toolkit/operator/v1/executor"
 	"github.com/ondat/operator-toolkit/operator/v1/operand"
+	"github.com/ondat/operator-toolkit/operator/v1/playbook"
+	"github.com/ondat/operator-toolkit/operator/v1/playbook/order"
 	"github.com/ondat/operator-toolkit/telemetry"
 )
 
@@ -27,10 +28,9 @@ const defaultRetryPeriod = 5 * time.Second
 // them. It implements the Operator interface.
 type CompositeOperator struct {
 	Operands          []operand.Operand
-	DAG               *dag.OperandDAG
+	ensurePlaybook    *playbook.Playbook
+	cleanupPlaybook   *playbook.Playbook
 	isSuspended       func(context.Context, client.Object) bool
-	order             operand.OperandOrder
-	blockers          operand.BlockingOperands
 	executionStrategy executor.ExecutionStrategy
 	recorder          record.EventRecorder
 	executor          *executor.Executor
@@ -95,7 +95,6 @@ func NewCompositeOperator(opts ...CompositeOperatorOption) (*CompositeOperator, 
 		isSuspended:       defaultIsSuspended,
 		executionStrategy: executor.Parallel,
 		retryPeriod:       defaultRetryPeriod,
-		blockers:          make(map[string]bool),
 	}
 
 	// Loop through each option.
@@ -114,22 +113,18 @@ func NewCompositeOperator(opts ...CompositeOperatorOption) (*CompositeOperator, 
 		WithInstrumentation(nil, nil, ctrl.Log)(c)
 	}
 
-	// Initialize the operator DAG.
-	od, err := dag.NewOperandDAG(c.Operands)
+	var err error
+	// Initialize the operator ensure playbook.
+	c.ensurePlaybook, err = playbook.NewPlaybook(c.Operands, operand.Ensure)
 	if err != nil {
 		return nil, err
 	}
-	c.DAG = od
 
-	// Compute traversal order in the DAG.
-	order, err := od.Order()
+	// Initialize the operator cleanup Playbook.
+	c.cleanupPlaybook, err = playbook.NewPlaybook(c.Operands, operand.Cleanup)
 	if err != nil {
 		return nil, err
 	}
-	c.order = order
-
-	// Find step blocking operands in the traversal order.
-	c.blockers = c.order.Blockers()
 
 	// Create an executor.
 	c.executor = executor.NewExecutor(c.executionStrategy, c.recorder)
@@ -137,17 +132,28 @@ func NewCompositeOperator(opts ...CompositeOperatorOption) (*CompositeOperator, 
 	return c, nil
 }
 
-// Order returns the order at which the operands depends on each other. This
-// can be used for creation and deletion of all the resource, if used in
-// reverse order.
-func (co *CompositeOperator) Order() operand.OperandOrder {
-	return co.order
+// EnsureOrder returns the order at which the operands depends on each other
+// for creation of all the resources.
+func (co *CompositeOperator) EnsureOrder() order.OperandOrder {
+	return co.ensurePlaybook.Order()
 }
 
-// Blockers returns the names of the operands which are deemed blockers for
-// their respective steps in the OperandOrder for execution.
-func (co *CompositeOperator) Blockers() operand.BlockingOperands {
-	return co.blockers
+// CleanupOrder returns the order at which the operands depends on each other
+// for deletion of all the resources.
+func (co *CompositeOperator) CleanupOrder() order.OperandOrder {
+	return co.cleanupPlaybook.Order()
+}
+
+// EnsureBlockers returns the names of the operands which are deemed blockers for
+// their respective steps in the OperandOrder for ensure execution.
+func (co *CompositeOperator) EnsureBlockers() order.BlockingOperands {
+	return co.ensurePlaybook.Blockers()
+}
+
+// CleanupBlockers returns the names of the operands which are deemed blockers for
+// their respective steps in the OperandOrder for cleanup execution.
+func (co *CompositeOperator) CleanupBlockers() order.BlockingOperands {
+	return co.cleanupPlaybook.Blockers()
 }
 
 // IsSuspend implements the Operator interface. It checks if the operator can
@@ -169,7 +175,7 @@ func (co *CompositeOperator) Ensure(ctx context.Context, obj client.Object, owne
 	result := ctrl.Result{}
 
 	if !co.IsSuspended(ctx, obj) {
-		res, err := co.executor.ExecuteOperands(co.order, co.blockers, operand.CallEnsure, ctx, obj, ownerRef)
+		res, err := co.executor.ExecuteOperands(co.EnsureOrder(), co.EnsureBlockers(), operand.CallEnsure, ctx, obj, ownerRef)
 		if err != nil {
 			// Not ready error shouldn't be propagated to the caller. Handle
 			// the error gracefully by returning a requeue result with a wait
@@ -195,8 +201,7 @@ func (co *CompositeOperator) Cleanup(ctx context.Context, obj client.Object) (re
 	defer span.End()
 
 	if !co.IsSuspended(ctx, obj) {
-		defer co.order.Reverse()
-		return co.executor.ExecuteOperands(co.order.Reverse(), co.blockers, operand.CallCleanup, ctx, obj, metav1.OwnerReference{})
+		return co.executor.ExecuteOperands(co.CleanupOrder(), co.CleanupBlockers(), operand.CallCleanup, ctx, obj, metav1.OwnerReference{})
 	}
 	return
 }
