@@ -30,7 +30,19 @@ func NewPlaybook(operands []operand.Operand, operandRunCallName operand.OperandR
 		return nil, err
 	}
 
-	blockers := order.Blockers(opOrder, requiredOperands)
+	blockers := make(order.BlockingOperands)
+	if operandRunCallName == operand.Cleanup {
+		// For cleanup, make every operand a blocker so
+		// that resources are not left behind.
+		for _, operand := range operands {
+			blockers[operand.Name()] = true
+		}
+	} else {
+		// For ensure, set specific blockers so that
+		// installation can occur even if non-blocking
+		// operands fail.
+		blockers = order.Blockers(opOrder, requiredOperands)
+	}
 
 	return &Playbook{
 		dag:      operandDAG,
