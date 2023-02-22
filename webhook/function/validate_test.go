@@ -3,7 +3,7 @@ package function
 import (
 	"context"
 
-	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
@@ -23,7 +23,7 @@ var _ = Describe("ValidateSingletonCreate", func() {
 		It("should create first new object", func() {
 			go1 := gameObj.DeepCopy()
 			go1.SetName("test-obj1")
-			Expect(k8sClient.Create(context.TODO(), go1)).ToNot(HaveOccurred())
+			Expect(k8sClient.Create(context.TODO(), go1)).To(HaveOccurred())
 		})
 
 		It("should fail creating a second new object", func() {

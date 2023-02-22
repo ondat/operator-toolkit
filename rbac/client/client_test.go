@@ -5,8 +5,9 @@ import (
 	"fmt"
 	"os"
 	"sync/atomic"
+	"time"
 
-	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
@@ -24,7 +25,7 @@ var _ = Describe("RBAC client recording", func() {
 	var testClusterRole *rbacv1.ClusterRole
 	ctx := context.TODO()
 
-	BeforeEach(func(done Done) {
+	BeforeEach(func(ctx SpecContext) {
 		atomic.AddUint64(&count, 1)
 
 		ns = &corev1.Namespace{ObjectMeta: metav1.ObjectMeta{Name: fmt.Sprintf("testns-%v", count)}}
@@ -49,16 +50,12 @@ var _ = Describe("RBAC client recording", func() {
 				Name: "test-cluster-role",
 			},
 		}
+	})
 
-		close(done)
-	}, 10)
-
-	AfterEach(func(done Done) {
+	AfterEach(func(ctx SpecContext) {
 		err := k8sClient.Delete(ctx, ns)
 		Expect(err).NotTo(HaveOccurred(), "failed to delete namespace")
-
-		close(done)
-	}, 10)
+	}, NodeTimeout(10*time.Second))
 
 	Describe("Use RBAC Client", func() {
 
