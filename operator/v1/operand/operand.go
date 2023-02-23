@@ -37,8 +37,15 @@ type Operand interface {
 	// Name of the operand.
 	Name() string
 
-	// Requires defines the relationship between the operands of an operator.
+	// Requires defines other operands that the operand requires to have
+	// been executed successfully during ensure before it can execute
+	// ensure itself.
 	Requires() []string
+
+	// CleanupRequires defines other operands that the operand requires
+	// to have been executed successfully during cleanup before it can
+	// execute cleanup itself.
+	CleanupRequires() []string
 
 	// Ensure creates, or updates a target object with the wanted
 	// configurations. It also returns an event that can be posted on the
@@ -65,6 +72,14 @@ type Operand interface {
 // returns an operand execute call. This is used for passing the operand
 // execute function (Ensure or Delete) in a generic way.
 type OperandRunCall func(op Operand) func(context.Context, client.Object, metav1.OwnerReference) (eventv1.ReconcilerEvent, error)
+
+// OperandRunCallName defines the name of the operand run call.
+type OperandRunCallName int
+
+const (
+	Ensure = iota
+	Cleanup
+)
 
 // CallEnsure is an OperandRunCall type function that calls the Ensure function
 // and the ReadyCheck of a given operand. The Ensure function ensures that the

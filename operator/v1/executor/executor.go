@@ -16,6 +16,7 @@ import (
 	"github.com/ondat/operator-toolkit/constant"
 	eventv1 "github.com/ondat/operator-toolkit/event/v1"
 	"github.com/ondat/operator-toolkit/operator/v1/operand"
+	"github.com/ondat/operator-toolkit/operator/v1/playbook/order"
 	"github.com/ondat/operator-toolkit/telemetry"
 )
 
@@ -53,8 +54,8 @@ func NewExecutor(e ExecutionStrategy, r record.EventRecorder) *Executor {
 // OperandRunCall function on each of the operands. The OperandRunCall can be a
 // call to Ensure or Delete.
 func (exe *Executor) ExecuteOperands(
-	order operand.OperandOrder,
-	blockers operand.BlockingOperands,
+	operandOrder order.OperandOrder,
+	blockers order.BlockingOperands,
 	call operand.OperandRunCall,
 	ctx context.Context,
 	obj client.Object,
@@ -63,11 +64,11 @@ func (exe *Executor) ExecuteOperands(
 	ctx, span, _, _ := exe.inst.Start(ctx, "execute")
 	defer span.End()
 
-	span.SetAttributes(attribute.Int("order-length", len(order)))
+	span.SetAttributes(attribute.Int("order-length", len(operandOrder)))
 	span.AddEvent("Start operand execution")
 	// Iterate through the order steps and run the operands in the steps as per
 	// the execution strategy.
-	for _, ops := range order {
+	for _, ops := range operandOrder {
 		// Error in the current execution step.
 		var execErr error
 
@@ -80,7 +81,7 @@ func (exe *Executor) ExecuteOperands(
 		// failedOperands are the operands that have failed during this step.
 		var failedOperands map[string]bool
 
-		requeueStrategy := operand.StepRequeueStrategy(ops)
+		requeueStrategy := order.StepRequeueStrategy(ops)
 
 		span.AddEvent(
 			"Execute operands",
@@ -127,7 +128,7 @@ func (exe *Executor) ExecuteOperands(
 }
 
 // failuresContainBlockingOperand returns true if a blocking operand is also a failed operand.
-func failuresContainBlockingOperand(failedOperands map[string]bool, blockers operand.BlockingOperands) bool {
+func failuresContainBlockingOperand(failedOperands map[string]bool, blockers order.BlockingOperands) bool {
 	for operandName, isBlocker := range blockers {
 		if failed, ok := failedOperands[operandName]; ok && failed && isBlocker {
 			return true
