@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"time"
 
-	"go.opentelemetry.io/otel/metric"
 	"go.opentelemetry.io/otel/trace"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/tools/record"
@@ -78,9 +77,9 @@ func WithRetryPeriod(duration time.Duration) CompositeOperatorOption {
 }
 
 // WithInstrumentation configures the instrumentation of the CompositeOperator.
-func WithInstrumentation(tp trace.TracerProvider, mp metric.MeterProvider, log logr.Logger) CompositeOperatorOption {
+func WithInstrumentation(tp trace.TracerProvider, log logr.Logger) CompositeOperatorOption {
 	return func(c *CompositeOperator) {
-		c.inst = telemetry.NewInstrumentationWithProviders(instrumentationName, tp, mp, log)
+		c.inst = telemetry.NewInstrumentationWithProviders(instrumentationName, tp, log)
 	}
 }
 

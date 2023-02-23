@@ -13,7 +13,7 @@ import (
 )
 
 func (s *Reconciler) Reconcile(ctx context.Context, req ctrl.Request) (result ctrl.Result, reterr error) {
-	ctx, span, _, log := s.Inst.Start(ctx, "Reconcile")
+	ctx, span, log := s.Inst.Start(ctx, "Reconcile")
 	defer span.End()
 
 	start := time.Now()

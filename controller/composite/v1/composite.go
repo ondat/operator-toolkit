@@ -2,7 +2,6 @@ package v1
 
 import (
 	"github.com/go-logr/logr"
-	"go.opentelemetry.io/otel/sdk/metric"
 	"go.opentelemetry.io/otel/trace"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -104,12 +103,12 @@ func WithScheme(scheme *runtime.Scheme) CompositeReconcilerOption {
 
 // WithInstrumentation configures the instrumentation  of the
 // CompositeReconciler.
-func WithInstrumentation(tp trace.TracerProvider, mp metric.MeterProvider, log logr.Logger) CompositeReconcilerOption {
+func WithInstrumentation(tp trace.TracerProvider, log logr.Logger) CompositeReconcilerOption {
 	return func(c *CompositeReconciler) {
 		if c.name != "" {
 			log = log.WithValues("reconciler", c.name)
 		}
-		c.inst = telemetry.NewInstrumentationWithProviders(instrumentationName, tp, mp, log)
+		c.inst = telemetry.NewInstrumentationWithProviders(instrumentationName, tp, log)
 	}
 }
 
@@ -147,7 +146,7 @@ func (c *CompositeReconciler) Init(mgr ctrl.Manager, ctrlr Controller, prototype
 	// If instrumentation is nil, create a new instrumentation with default
 	// providers.
 	if c.inst == nil {
-		WithInstrumentation(nil, nil, ctrl.Log)(c)
+		WithInstrumentation(nil, ctrl.Log)(c)
 	}
 
 	return nil

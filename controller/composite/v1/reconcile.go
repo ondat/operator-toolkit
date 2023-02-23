@@ -16,7 +16,7 @@ import (
 
 // Reconcile implements the composite controller reconciliation.
 func (c *CompositeReconciler) Reconcile(ctx context.Context, req ctrl.Request) (result ctrl.Result, reterr error) {
-	ctx, span, _, log := c.inst.Start(ctx, "Reconcile")
+	ctx, span, log := c.inst.Start(ctx, "Reconcile")
 	defer span.End()
 
 	start := time.Now()
@@ -163,7 +163,7 @@ func (c *CompositeReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 // updated which tells the caller about an API update, usually update to the
 // finalizers in the object.
 func (c *CompositeReconciler) cleanupHandler(ctx context.Context, obj client.Object) (delEnabled bool, updated bool, result ctrl.Result, reterr error) {
-	ctx, span, _, log := c.inst.Start(ctx, "cleanupHandler")
+	ctx, span, log := c.inst.Start(ctx, "cleanupHandler")
 	defer span.End()
 
 	if obj.GetDeletionTimestamp().IsZero() {
