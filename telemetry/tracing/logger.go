@@ -1,6 +1,10 @@
 package tracing
 
 import (
+	"encoding/json"
+	"fmt"
+	"reflect"
+
 	"github.com/go-logr/logr"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
@@ -103,7 +107,38 @@ func keyValues(keysAndValues ...interface{}) []attribute.KeyValue {
 			// The key isn't a string. Unexpected value type.
 			key = nonStringKey
 		}
-		attrs = append(attrs, attribute.Any(key, keysAndValues[i+1]))
+		attrs = append(attrs, any(key, keysAndValues[i+1]))
 	}
 	return attrs
+}
+
+// any creates a new key-value pair instance with a passed name and
+// automatic type inference. This is slower, and not type-safe.
+func any(k string, value interface{}) attribute.KeyValue {
+	if value == nil {
+		return attribute.String(k, "<nil>")
+	}
+
+	if stringer, ok := value.(fmt.Stringer); ok {
+		return attribute.String(k, stringer.String())
+	}
+
+	rv := reflect.ValueOf(value)
+
+	switch rv.Kind() {
+	case reflect.Bool:
+		return attribute.Bool(k, rv.Bool())
+	case reflect.Int, reflect.Int8, reflect.Int16:
+		return attribute.Int(k, int(rv.Int()))
+	case reflect.Int64:
+		return attribute.Int64(k, rv.Int())
+	case reflect.Float64:
+		return attribute.Float64(k, rv.Float())
+	case reflect.Array, reflect.Slice, reflect.String:
+		return attribute.String(k, rv.String())
+	}
+	if b, err := json.Marshal(value); b != nil && err == nil {
+		return attribute.String(k, string(b))
+	}
+	return attribute.String(k, fmt.Sprint(value))
 }
