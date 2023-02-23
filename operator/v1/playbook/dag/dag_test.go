@@ -7,6 +7,7 @@ import (
 
 	"github.com/ondat/operator-toolkit/operator/v1/operand"
 	"github.com/ondat/operator-toolkit/operator/v1/operand/mocks"
+	"github.com/ondat/operator-toolkit/operator/v1/playbook/order"
 )
 
 func TestDAG(t *testing.T) {
@@ -69,8 +70,11 @@ func TestDAG(t *testing.T) {
   2: [ C ]
   3: [ A B ]
 ]`
-
-	opd, err := NewOperandDAG(ops)
+	req, err := order.Required(ops, 0)
+	if err != nil {
+		t.Fatalf("unexpected error while finding required operands: %v", err)
+	}
+	opd, err := NewOperandDAG(ops, req)
 	if err != nil {
 		t.Fatalf("unexpected error while creating OperandDAG: %v", err)
 	}

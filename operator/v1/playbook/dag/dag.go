@@ -4,6 +4,7 @@ import (
 	"github.com/goombaio/dag"
 
 	"github.com/ondat/operator-toolkit/operator/v1/operand"
+	"github.com/ondat/operator-toolkit/operator/v1/playbook/order"
 )
 
 // OperandDAG is a directed acyclic graph representation of the opereand
@@ -13,8 +14,8 @@ type OperandDAG struct {
 	*dag.DAG
 }
 
-func NewOperandDAG(operands []operand.Operand) (*OperandDAG, error) {
-	od := &OperandDAG{DAG: dag.NewDAG()}
+func NewOperandDAG(operands []operand.Operand, requiredOperands map[string][]string) (*OperandDAG, error) {
+	od := &OperandDAG{dag.NewDAG()}
 
 	// Create vertices for all the operands.
 	for _, op := range operands {
@@ -26,14 +27,14 @@ func NewOperandDAG(operands []operand.Operand) (*OperandDAG, error) {
 
 	// Create edges between the vertices based on the operand's depends on
 	// property.
-	for _, op := range operands {
-		headVertex, err := od.GetVertex(op.Name())
+	for opName, required := range requiredOperands {
+		headVertex, err := od.GetVertex(opName)
 		if err != nil {
 			return nil, err
 		}
 
 		// Connect the operand to all the vertices it depends on.
-		for _, dep := range op.Requires() {
+		for _, dep := range required {
 			tailVertex, err := od.GetVertex(dep)
 			if err != nil {
 				return nil, err
@@ -47,7 +48,7 @@ func NewOperandDAG(operands []operand.Operand) (*OperandDAG, error) {
 	return od, nil
 }
 
-func (od *OperandDAG) Order() (operand.OperandOrder, error) {
+func (od *OperandDAG) Order() (order.OperandOrder, error) {
 	soln, steps, err := od.solve()
 	if err != nil {
 		return nil, err
