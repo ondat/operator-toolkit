@@ -61,7 +61,7 @@ func (exe *Executor) ExecuteOperands(
 	obj client.Object,
 	ownerRef metav1.OwnerReference,
 ) (result ctrl.Result, rerr error) {
-	ctx, span, _, _ := exe.inst.Start(ctx, "execute")
+	ctx, span, _ := exe.inst.Start(ctx, "execute")
 	defer span.End()
 
 	span.SetAttributes(attribute.Int("order-length", len(operandOrder)))
@@ -147,7 +147,7 @@ func (exe *Executor) serialExec(
 	obj client.Object,
 	ownerRef metav1.OwnerReference,
 ) (result *ctrl.Result, failedOperands map[string]bool, rerr error) {
-	ctx, span, _, _ := exe.inst.Start(ctx, "serial-exec")
+	ctx, span, _ := exe.inst.Start(ctx, "serial-exec")
 	defer span.End()
 
 	result = nil
@@ -194,7 +194,7 @@ func (exe *Executor) concurrentExec(
 	obj client.Object,
 	ownerRef metav1.OwnerReference,
 ) (result *ctrl.Result, failedOperands map[string]bool, rerr error) {
-	ctx, span, _, _ := exe.inst.Start(ctx, "concurrent-exec")
+	ctx, span, _ := exe.inst.Start(ctx, "concurrent-exec")
 	defer span.End()
 
 	result = nil
