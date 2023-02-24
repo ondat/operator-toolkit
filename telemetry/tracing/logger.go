@@ -107,14 +107,14 @@ func keyValues(keysAndValues ...interface{}) []attribute.KeyValue {
 			// The key isn't a string. Unexpected value type.
 			key = nonStringKey
 		}
-		attrs = append(attrs, any(key, keysAndValues[i+1]))
+		attrs = append(attrs, Any(key, keysAndValues[i+1]))
 	}
 	return attrs
 }
 
-// any creates a new key-value pair instance with a passed name and
+// Any creates a new key-value pair instance with a passed name and
 // automatic type inference. This is slower, and not type-safe.
-func any(k string, value interface{}) attribute.KeyValue {
+func Any(k string, value interface{}) attribute.KeyValue {
 	if value == nil {
 		return attribute.String(k, "<nil>")
 	}
