@@ -37,7 +37,7 @@ func (c *Client) recordRuleWithStatus(obj runtime.Object, verb string, status bo
 	// We need only the plural form of resource.
 	gvr, _ := meta.UnsafeGuessKindToResource(gvk)
 
-	namespaced, err := isNamespaced(c, obj)
+	namespaced, err := isNamespaced(c.Client, obj)
 	if err != nil {
 		c.errors = append(c.errors, err)
 		c.Log.Error(err, "failed to find isNamespaced")
