@@ -74,7 +74,7 @@ func ApplyFlagsToApplyOptions(flags *apply.ApplyFlags) (*apply.ApplyOptions, err
 	}
 
 	if flags.Prune {
-		flags.PruneResources, err = prune.ParseResources(mapper, flags.PruneWhitelist)
+		flags.PruneResources, err = prune.ParseResources(mapper, flags.PruneAllowlist)
 		if err != nil {
 			return nil, err
 		}
@@ -96,7 +96,6 @@ func ApplyFlagsToApplyOptions(flags *apply.ApplyFlags) (*apply.ApplyOptions, err
 		All:             flags.All,
 		Overwrite:       flags.Overwrite,
 		OpenAPIPatch:    flags.OpenAPIPatch,
-		PruneWhitelist:  flags.PruneWhitelist,
 
 		Recorder:            recorder,
 		Namespace:           namespace,
