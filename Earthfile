@@ -1,5 +1,5 @@
 VERSION 0.6
-FROM golang:1.18.0
+FROM golang:1.19.6
 WORKDIR /workdir
 
 deps:
@@ -23,8 +23,8 @@ gosec:
     FROM earthly/dind:alpine
     WORKDIR /workdir
     COPY . ./
-    WITH DOCKER --pull securego/gosec:2.11.0
-        RUN docker run -w $PWD -v $PWD:$PWD securego/gosec:2.11.0 -exclude-dir=example -exclude-generated ./...
+    WITH DOCKER --pull securego/gosec:2.15.0
+        RUN docker run -w $PWD -v $PWD:$PWD securego/gosec:2.15.0 -exclude-dir=example -exclude-generated ./...
     END
 
 test:
