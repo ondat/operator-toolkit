@@ -2,7 +2,6 @@ package v1
 
 import (
 	"github.com/go-logr/logr"
-	"go.opentelemetry.io/otel/metric"
 	"go.opentelemetry.io/otel/trace"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -66,12 +65,12 @@ func WithSyncFuncs(sf []SyncFunc) ReconcilerOption {
 }
 
 // WithInstrumentation configures the instrumentation of the Reconciler.
-func WithInstrumentation(tp trace.TracerProvider, mp metric.MeterProvider, log logr.Logger) ReconcilerOption {
+func WithInstrumentation(tp trace.TracerProvider, log logr.Logger) ReconcilerOption {
 	return func(s *Reconciler) {
 		if s.Name != "" {
 			log = log.WithValues("reconciler", s.Name)
 		}
-		s.Inst = telemetry.NewInstrumentationWithProviders(instrumentationName, tp, mp, log)
+		s.Inst = telemetry.NewInstrumentationWithProviders(instrumentationName, tp, log)
 	}
 }
 
@@ -103,7 +102,7 @@ func (s *Reconciler) Init(mgr ctrl.Manager, ctrlr Controller, prototype client.O
 	// If instrumentation is nil, create a new instrumentation with default
 	// providers.
 	if s.Inst == nil {
-		WithInstrumentation(nil, nil, ctrl.Log)(s)
+		WithInstrumentation(nil, ctrl.Log)(s)
 	}
 
 	// Run the sync functions.

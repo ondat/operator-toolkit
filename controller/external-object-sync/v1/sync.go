@@ -67,7 +67,7 @@ func (s *Reconciler) collectGarbage() {
 	// TODO: Provide option to set timeout for the garbage collection. Since
 	// this runs in a goroutine, when the reconcile has a timeout duration, use
 	// it with the created context.
-	ctx, span, _, log := s.Inst.Start(context.Background(), "collectGarbage")
+	ctx, span, log := s.Inst.Start(context.Background(), "collectGarbage")
 	defer span.End()
 	log.WithValues("garbage-collector", s.Name)
 

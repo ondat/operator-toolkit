@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"time"
 
-	"go.opentelemetry.io/otel/metric"
 	"go.opentelemetry.io/otel/trace"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/tools/record"
@@ -78,9 +77,9 @@ func WithRetryPeriod(duration time.Duration) CompositeOperatorOption {
 }
 
 // WithInstrumentation configures the instrumentation of the CompositeOperator.
-func WithInstrumentation(tp trace.TracerProvider, mp metric.MeterProvider, log logr.Logger) CompositeOperatorOption {
+func WithInstrumentation(tp trace.TracerProvider, log logr.Logger) CompositeOperatorOption {
 	return func(c *CompositeOperator) {
-		c.inst = telemetry.NewInstrumentationWithProviders(instrumentationName, tp, mp, log)
+		c.inst = telemetry.NewInstrumentationWithProviders(instrumentationName, tp, log)
 	}
 }
 
@@ -110,7 +109,7 @@ func NewCompositeOperator(opts ...CompositeOperatorOption) (*CompositeOperator, 
 	// If instrumentation is nil, create a new instrumentation with default
 	// providers.
 	if c.inst == nil {
-		WithInstrumentation(nil, nil, ctrl.Log)(c)
+		WithInstrumentation(nil, ctrl.Log)(c)
 	}
 
 	var err error
@@ -159,7 +158,7 @@ func (co *CompositeOperator) CleanupBlockers() order.BlockingOperands {
 // IsSuspend implements the Operator interface. It checks if the operator can
 // run or if it's suspended and shouldn't run.
 func (co *CompositeOperator) IsSuspended(ctx context.Context, obj client.Object) bool {
-	ctx, span, _, _ := co.inst.Start(ctx, "IsSuspended")
+	ctx, span, _ := co.inst.Start(ctx, "IsSuspended")
 	defer span.End()
 
 	return co.isSuspended(ctx, obj)
@@ -169,7 +168,7 @@ func (co *CompositeOperator) IsSuspended(ctx context.Context, obj client.Object)
 // order of their dependencies, to ensure all the operations the individual
 // operands perform.
 func (co *CompositeOperator) Ensure(ctx context.Context, obj client.Object, ownerRef metav1.OwnerReference) (ctrl.Result, error) {
-	ctx, span, _, log := co.inst.Start(ctx, "Ensure")
+	ctx, span, log := co.inst.Start(ctx, "Ensure")
 	defer span.End()
 
 	result := ctrl.Result{}
@@ -197,7 +196,7 @@ func (co *CompositeOperator) Ensure(ctx context.Context, obj client.Object, owne
 
 // Cleanup implements the Operator interface.
 func (co *CompositeOperator) Cleanup(ctx context.Context, obj client.Object) (result ctrl.Result, rerr error) {
-	ctx, span, _, _ := co.inst.Start(ctx, "Cleanup")
+	ctx, span, _ := co.inst.Start(ctx, "Cleanup")
 	defer span.End()
 
 	if !co.IsSuspended(ctx, obj) {

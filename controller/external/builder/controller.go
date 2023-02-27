@@ -52,7 +52,9 @@ func (blder *Builder) WithOptions(options controller.Options) *Builder {
 
 // WithLogger overrides the controller options's logger used.
 func (blder *Builder) WithLogger(log logr.Logger) *Builder {
-	blder.ctrlOptions.Log = log
+	blder.ctrlOptions.LogConstructor = func(req *reconcile.Request) logr.Logger {
+		return log
+	}
 	return blder
 }
 
@@ -115,7 +117,9 @@ func (blder *Builder) doController(r reconcile.Reconciler) error {
 
 	// Setup the logger.
 	if !blder.ctrlOptionsGiven {
-		ctrlOptions.Log = blder.mgr.GetLogger()
+		ctrlOptions.LogConstructor = func(req *reconcile.Request) logr.Logger {
+			return blder.mgr.GetLogger()
+		}
 	}
 
 	var err error

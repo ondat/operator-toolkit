@@ -47,7 +47,7 @@ func NewClientFromManager(mgr manager.Manager, opts Options) (client.Client, err
 
 // Get first fetches the object using the cached client. If the object is not
 // found in the cached client, it retries using the uncached client.
-func (c *Client) Get(ctx context.Context, key client.ObjectKey, obj client.Object) error {
+func (c *Client) Get(ctx context.Context, key client.ObjectKey, obj client.Object, opts ...client.GetOption) error {
 	if cErr := c.Client.Get(ctx, key, obj); cErr != nil {
 		// If not found in the cache, try with the uncached client.
 		if apierrors.IsNotFound(cErr) {

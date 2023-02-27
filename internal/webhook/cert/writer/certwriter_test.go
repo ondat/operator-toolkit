@@ -20,7 +20,7 @@ import (
 	"context"
 	goerrors "errors"
 
-	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
 	"k8s.io/apimachinery/pkg/api/errors"
@@ -95,7 +95,7 @@ var _ = Describe("handleCommon", func() {
 
 	ctx := context.Background()
 
-	BeforeEach(func(done Done) {
+	BeforeEach(func() {
 		cert = &generator.Artifacts{
 			CACert: []byte(certs1.CACert),
 			Cert:   []byte(certs1.Cert),
@@ -106,7 +106,6 @@ var _ = Describe("handleCommon", func() {
 			Cert:   []byte(`CertBytes`),
 			Key:    []byte(`KeyBytes`),
 		}
-		close(done)
 	})
 
 	Context("when DNS name is empty", func() {

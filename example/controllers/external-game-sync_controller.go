@@ -48,7 +48,7 @@ type ExternalGameSyncReconciler struct {
 
 // SetupWithManager sets up the controller with the Manager.
 func (r *ExternalGameSyncReconciler) SetupWithManager(mgr ctrl.Manager) error {
-	_, span, _, log := r.Instrumentation.Start(context.Background(), "externalGameSync.SetupWithManager")
+	_, span, log := r.Instrumentation.Start(context.Background(), "externalGameSync.SetupWithManager")
 	defer span.End()
 
 	c := externalGameSync.NewExternalGameSyncController()
@@ -60,7 +60,7 @@ func (r *ExternalGameSyncReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		syncv1.WithName("external-game-sync-controller"),
 		syncv1.WithScheme(r.Scheme),
 		syncv1.WithClient(r.Client),
-		syncv1.WithInstrumentation(nil, nil, log),
+		syncv1.WithInstrumentation(nil, log),
 	)
 	if err != nil {
 		return fmt.Errorf("failed to create new ExternalObjectSyncReconciler: %w", err)

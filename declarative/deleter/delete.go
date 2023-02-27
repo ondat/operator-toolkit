@@ -47,9 +47,20 @@ func (d *DirectDeleter) Delete(ctx context.Context, namespace string, manifest s
 	restClient := genericclioptions.NewConfigFlags(true).WithDeprecatedPasswordFlag()
 
 	f := cmdutil.NewFactory(restClient)
-	_, err := f.Validator(validate)
+
+	dynamicClient, err := f.DynamicClient()
 	if err != nil {
-		return errors.Wrapf(err, "failed to find validation schema")
+		return errors.Wrap(err, "dynamic client failed")
+	}
+
+	validateDirective := "ignore"
+	if validate {
+		validateDirective = "strict"
+	}
+
+	_, err = f.Validator(validateDirective, resource.NewQueryParamVerifier(dynamicClient, f.OpenAPIGetter(), resource.QueryParamDryRun))
+	if err != nil {
+		return errors.Wrap(err, "validation failed")
 	}
 
 	// Write the given file into a temporary file and pass that to the
@@ -139,11 +150,7 @@ func complete(o *delete.DeleteOptions, f cmdutil.Factory, args []string) error {
 	if err != nil {
 		return err
 	}
-	discoveryClient, err := f.ToDiscoveryClient()
-	if err != nil {
-		return err
-	}
-	o.DryRunVerifier = resource.NewDryRunVerifier(dynamicClient, discoveryClient)
+	o.DryRunVerifier = resource.NewQueryParamVerifier(dynamicClient, f.OpenAPIGetter(), resource.QueryParamDryRun)
 
 	if len(o.Raw) == 0 {
 		r := f.NewBuilder().

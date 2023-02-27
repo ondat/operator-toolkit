@@ -30,7 +30,7 @@ type informerCache struct {
 }
 
 // Get implements Reader
-func (ic *informerCache) Get(ctx context.Context, key client.ObjectKey, out client.Object) error {
+func (ic *informerCache) Get(ctx context.Context, key client.ObjectKey, out client.Object, opts ...client.GetOption) error {
 	gvk, err := apiutil.GVKForObject(out, ic.Scheme)
 	if err != nil {
 		return err

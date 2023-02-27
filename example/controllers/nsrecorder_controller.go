@@ -51,7 +51,7 @@ func (r *NamespaceRecorderReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	nsc := &nsRecorder{
 		Client: r.Client,
 		instrumentation: telemetry.NewInstrumentationWithProviders(
-			InstrumentationName, nil, nil, log),
+			InstrumentationName, nil, log),
 		configmapNamespace: "default",
 	}
 
@@ -61,7 +61,7 @@ func (r *NamespaceRecorderReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		actionv1.WithScheme(mgr.GetScheme()),
 		actionv1.WithActionTimeout(10*time.Second),
 		actionv1.WithActionRetryPeriod(2*time.Second),
-		actionv1.WithInstrumentation(nil, nil, log),
+		actionv1.WithInstrumentation(nil, log),
 	)
 
 	return ctrl.NewControllerManagedBy(mgr).

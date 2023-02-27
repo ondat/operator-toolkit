@@ -67,7 +67,7 @@ type GameReconciler struct {
 
 // SetupWithManager sets up the controller with the Manager.
 func (r *GameReconciler) SetupWithManager(mgr ctrl.Manager) error {
-	_, span, _, log := r.Instrumentation.Start(context.Background(), "game.SetupWithManager")
+	_, span, log := r.Instrumentation.Start(context.Background(), "game.SetupWithManager")
 	defer span.End()
 
 	// Load manifests in an in-memory filesystem.
@@ -87,7 +87,7 @@ func (r *GameReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		compositev1.WithName("game-controller"),
 		compositev1.WithCleanupStrategy(compositev1.OwnerReferenceCleanup),
 		compositev1.WithInitCondition(compositev1.DefaultInitCondition),
-		compositev1.WithInstrumentation(nil, nil, log),
+		compositev1.WithInstrumentation(nil, log),
 	)
 	if err != nil {
 		return fmt.Errorf("failed to create new CompositeReconciler: %w", err)

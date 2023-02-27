@@ -60,7 +60,7 @@ func (s *Reconciler) resync() {
 	// TODO: Provide option to set timeout for the resync. Since this runs in a
 	// goroutine, when the reconcile has a timeout duration, use it with the
 	// created context.
-	ctx, span, _, log := s.Inst.Start(context.Background(), "resync")
+	ctx, span, log := s.Inst.Start(context.Background(), "resync")
 	defer span.End()
 	log.WithValues("resync", s.Name)
 

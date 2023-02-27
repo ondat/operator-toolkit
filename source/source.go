@@ -77,8 +77,9 @@ func (ks *Kind) Start(ctx context.Context, handler handler.EventHandler, queue w
 		// }
 		return err
 	}
-	i.AddEventHandler(internal.EventHandler{Queue: queue, EventHandler: handler, Predicates: prct})
-	return nil
+	_, err = i.AddEventHandler(internal.EventHandler{Queue: queue, EventHandler: handler, Predicates: prct})
+
+	return err
 }
 
 func (ks *Kind) String() string {

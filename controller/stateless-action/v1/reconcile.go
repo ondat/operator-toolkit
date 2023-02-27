@@ -8,7 +8,6 @@ import (
 	"github.com/go-logr/logr"
 	"github.com/pkg/errors"
 	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/metric"
 	"go.opentelemetry.io/otel/trace"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -66,13 +65,13 @@ func WithScheme(scheme *runtime.Scheme) ReconcilerOption {
 }
 
 // WithInstrumentation configures the instrumentation  of the Reconciler.
-func WithInstrumentation(tp trace.TracerProvider, mp metric.MeterProvider, log logr.Logger) ReconcilerOption {
+func WithInstrumentation(tp trace.TracerProvider, log logr.Logger) ReconcilerOption {
 	return func(r *Reconciler) {
 		// Populate the instrumentation with reconciler data.
 		if r.name != "" {
 			log = log.WithValues("reconciler", r.name)
 		}
-		r.inst = telemetry.NewInstrumentationWithProviders(instrumentationName, tp, mp, log)
+		r.inst = telemetry.NewInstrumentationWithProviders(instrumentationName, tp, log)
 	}
 }
 
@@ -94,12 +93,12 @@ func (r *Reconciler) Init(mgr ctrl.Manager, ctrlr Controller, opts ...Reconciler
 	// If instrumentation is nil, create a new instrumentation with default
 	// providers.
 	if r.inst == nil {
-		WithInstrumentation(nil, nil, ctrl.Log)(r)
+		WithInstrumentation(nil, ctrl.Log)(r)
 	}
 }
 
 func (r *Reconciler) Reconcile(ctx context.Context, req ctrl.Request) (result ctrl.Result, reterr error) {
-	ctx, span, _, log := r.inst.Start(ctx, r.name+": Reconcile")
+	ctx, span, log := r.inst.Start(ctx, r.name+": Reconcile")
 	defer span.End()
 
 	start := time.Now()
@@ -153,7 +152,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req ctrl.Request) (result ct
 // RunActionManager runs the actions in the action manager based on the given
 // object.
 func (r *Reconciler) RunActionManager(ctx context.Context, o interface{}) error {
-	ctx, span, _, log := r.inst.Start(ctx, r.name+": run action manager")
+	ctx, span, log := r.inst.Start(ctx, r.name+": run action manager")
 	defer span.End()
 
 	span.AddEvent("Build action manager")
@@ -198,7 +197,7 @@ func (r *Reconciler) RunAction(actmgr action.Manager, o interface{}) (retErr err
 	ctx, cancel := context.WithTimeout(context.Background(), r.actionTimeout)
 	defer cancel()
 
-	ctx, span, _, log := r.inst.Start(ctx, r.name+": run action")
+	ctx, span, log := r.inst.Start(ctx, r.name+": run action")
 	defer span.End()
 
 	// Set action info in the logger.

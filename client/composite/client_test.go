@@ -3,7 +3,7 @@ package composite
 import (
 	"context"
 
-	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
 	// ctrl "sigs.k8s.io/controller-runtime"
@@ -100,7 +100,7 @@ type fakeReader struct {
 
 // Get implements the CacheReader interface Get method. It returns NOT FOUND
 // error to enable testing when an object is not in cache.
-func (f *fakeReader) Get(ctx context.Context, key client.ObjectKey, obj client.Object) error {
+func (f *fakeReader) Get(ctx context.Context, key client.ObjectKey, obj client.Object, opts ...client.GetOption) error {
 	f.Called = f.Called + 1
 	return apierrors.NewNotFound(schema.GroupResource{}, "")
 }

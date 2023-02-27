@@ -147,13 +147,19 @@ type StatusWriter struct {
 }
 
 // Update implements client.StatusWriter.
-func (sc *StatusWriter) Update(ctx context.Context, obj client.Object, opts ...client.UpdateOption) error {
+func (sc *StatusWriter) Update(ctx context.Context, obj client.Object, opts ...client.SubResourceUpdateOption) error {
 	sc.rbacClient.recordRuleWithStatus(obj, VerbUpdate, true)
 	return sc.client.Status().Update(ctx, obj, opts...)
 }
 
 // Patch implements client.StatusWriter.
-func (sc *StatusWriter) Patch(ctx context.Context, obj client.Object, patch client.Patch, opts ...client.PatchOption) error {
+func (sc *StatusWriter) Patch(ctx context.Context, obj client.Object, patch client.Patch, opts ...client.SubResourcePatchOption) error {
 	sc.rbacClient.recordRuleWithStatus(obj, VerbPatch, true)
 	return sc.client.Status().Patch(ctx, obj, patch, opts...)
+}
+
+// Create implements client.StatusWriter.
+func (sc *StatusWriter) Create(ctx context.Context, obj client.Object, subResource client.Object, opts ...client.SubResourceCreateOption) error {
+	sc.rbacClient.recordRuleWithStatus(obj, VerbCreate, true)
+	return sc.client.Status().Create(ctx, obj, subResource, opts...)
 }

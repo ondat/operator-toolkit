@@ -7,10 +7,9 @@ import (
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/exporters/trace/jaeger"
+	"go.opentelemetry.io/otel/exporters/jaeger"
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
-	"go.opentelemetry.io/otel/semconv"
 )
 
 // TracerShutdown is returned by exporter setup functions. This is called to
@@ -31,7 +30,7 @@ func InstallJaegerExporter(serviceName string, tpOpts ...sdktrace.TracerProvider
 		return func() {}, nil
 	}
 
-	exp, err := jaeger.NewRawExporter(jaeger.WithCollectorEndpoint())
+	exp, err := jaeger.New(jaeger.WithCollectorEndpoint())
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +38,7 @@ func InstallJaegerExporter(serviceName string, tpOpts ...sdktrace.TracerProvider
 	tp := sdktrace.NewTracerProvider(
 		sdktrace.WithBatcher(exp),
 		sdktrace.WithResource(resource.NewWithAttributes(
-			semconv.ServiceNameKey.String(serviceName),
+			serviceName,
 			attribute.String("exporter", "jaeger"),
 		)),
 	)
