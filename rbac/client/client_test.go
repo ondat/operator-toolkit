@@ -58,7 +58,6 @@ var _ = Describe("RBAC client recording", func() {
 	}, NodeTimeout(10*time.Second))
 
 	Describe("Use RBAC Client", func() {
-
 		Context("to record API calls", func() {
 			It("should record the RBAC permission", func() {
 				err := cli.Create(ctx, gameObj)
@@ -93,6 +92,5 @@ var _ = Describe("RBAC client recording", func() {
 				Expect(Result(cli, os.Stdout, os.Stdout)).NotTo(HaveOccurred(), "failed to get RBAC result")
 			})
 		})
-
 	})
 })

@@ -219,11 +219,11 @@ func WriteCSR(csrDir, name string, csr *x509.CertificateRequest) error {
 	}
 
 	csrPath := pathForCSR(csrDir, name)
-	if err := os.MkdirAll(filepath.Dir(csrPath), os.FileMode(0700)); err != nil {
+	if err := os.MkdirAll(filepath.Dir(csrPath), os.FileMode(0o700)); err != nil {
 		return errors.Wrapf(err, "failed to make directory %s", filepath.Dir(csrPath))
 	}
 
-	if err := os.WriteFile(csrPath, EncodeCSRPEM(csr), os.FileMode(0600)); err != nil {
+	if err := os.WriteFile(csrPath, EncodeCSRPEM(csr), os.FileMode(0o600)); err != nil {
 		return errors.Wrapf(err, "unable to write CSR to file %s", csrPath)
 	}
 
@@ -580,7 +580,6 @@ func NewCSR(cfg CertConfig, key crypto.Signer) (*x509.CertificateRequest, error)
 	}
 
 	csrBytes, err := x509.CreateCertificateRequest(cryptorand.Reader, template, key)
-
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create a CSR")
 	}

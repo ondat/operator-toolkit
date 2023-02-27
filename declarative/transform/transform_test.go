@@ -65,7 +65,6 @@ metadata:
 	b, err := fs.ReadFile(targetFile)
 	assert.Nil(t, err)
 	assert.Equal(t, wantManifest, string(b))
-
 }
 
 func TestReplicaTransform(t *testing.T) {

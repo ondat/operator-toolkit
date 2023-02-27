@@ -32,7 +32,8 @@ type kindWithCache struct {
 }
 
 func (ks *kindWithCache) Start(ctx context.Context, handler handler.EventHandler, queue workqueue.RateLimitingInterface,
-	prct ...predicate.Predicate) error {
+	prct ...predicate.Predicate,
+) error {
 	return ks.kind.Start(ctx, handler, queue, prct...)
 }
 
@@ -54,8 +55,8 @@ var _ source.SyncingSource = &Kind{}
 // Start is internal and should be called only by the Controller to register an EventHandler with the Informer
 // to enqueue reconcile.Requests.
 func (ks *Kind) Start(ctx context.Context, handler handler.EventHandler, queue workqueue.RateLimitingInterface,
-	prct ...predicate.Predicate) error {
-
+	prct ...predicate.Predicate,
+) error {
 	// Type should have been specified by the user.
 	if ks.Type == nil {
 		return fmt.Errorf("must specify Kind.Type")

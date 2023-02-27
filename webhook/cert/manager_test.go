@@ -25,7 +25,8 @@ func getTestResources() (
 	*corev1.Secret,
 	*admissionregistrationv1.MutatingWebhookConfiguration,
 	*admissionregistrationv1.ValidatingWebhookConfiguration,
-	*apix.CustomResourceDefinition) {
+	*apix.CustomResourceDefinition,
+) {
 	secret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "webhook-secret",

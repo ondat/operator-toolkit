@@ -13,7 +13,6 @@ import (
 )
 
 func TestNamespacedNames(t *testing.T) {
-
 	cases := []struct {
 		name      string
 		instances client.ObjectList
@@ -296,7 +295,6 @@ func TestClientObjects(t *testing.T) {
 				assert.Equal(t, tc.want[i].name, obj.GetName())
 				assert.Equal(t, tc.want[i].namespace, obj.GetNamespace())
 			}
-
 		})
 	}
 }

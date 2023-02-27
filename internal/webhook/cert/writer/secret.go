@@ -109,7 +109,8 @@ func (s *secretCertWriter) write(ctx context.Context) (*generator.Artifacts, err
 }
 
 func (s *secretCertWriter) overwrite(ctx context.Context) (
-	*generator.Artifacts, error) {
+	*generator.Artifacts, error,
+) {
 	secret, certs, err := s.buildSecret()
 	if err != nil {
 		return nil, err

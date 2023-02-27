@@ -21,9 +21,11 @@ import (
 // http://onsi.github.io/ginkgo/ to learn more about Ginkgo.
 
 // var cfg *rest.Config
-var k8sClient client.Client
-var testEnv *envtest.Environment
-var cli *Client
+var (
+	k8sClient client.Client
+	testEnv   *envtest.Environment
+	cli       *Client
+)
 
 func TestAPIs(t *testing.T) {
 	RegisterFailHandler(Fail)
@@ -54,7 +56,6 @@ var _ = BeforeSuite(func(ctx SpecContext) {
 
 	cli = NewClient(k8sClient)
 	Expect(cli).NotTo(BeNil())
-
 }, NodeTimeout(60*time.Second))
 
 var _ = AfterSuite(func() {

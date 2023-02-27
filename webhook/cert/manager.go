@@ -292,14 +292,14 @@ func (m *Manager) writeCertOnDisk(ctx context.Context) error {
 	cert := secret.Data[writer.ServerCertName]
 	key := secret.Data[writer.ServerKeyName]
 
-	if err := os.MkdirAll(m.CertDir, 0700); err != nil {
+	if err := os.MkdirAll(m.CertDir, 0o700); err != nil {
 		return err
 	}
 
-	if err := os.WriteFile(filepath.Join(m.CertDir, m.CertName), cert, 0600); err != nil {
+	if err := os.WriteFile(filepath.Join(m.CertDir, m.CertName), cert, 0o600); err != nil {
 		return err
 	}
-	if err := os.WriteFile(filepath.Join(m.CertDir, m.KeyName), key, 0600); err != nil {
+	if err := os.WriteFile(filepath.Join(m.CertDir, m.KeyName), key, 0o600); err != nil {
 		return err
 	}
 

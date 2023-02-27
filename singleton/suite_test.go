@@ -17,8 +17,10 @@ import (
 // These tests use Ginkgo (BDD-style Go testing framework). Refer to
 // http://onsi.github.io/ginkgo/ to learn more about Ginkgo.
 
-var cfg *rest.Config
-var testEnv *envtest.Environment
+var (
+	cfg     *rest.Config
+	testEnv *envtest.Environment
+)
 
 func TestSingleton(t *testing.T) {
 	RegisterFailHandler(Fail)
