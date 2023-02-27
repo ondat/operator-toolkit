@@ -11,7 +11,6 @@ import (
 )
 
 var _ = Describe("ValidateSingletonCreate", func() {
-
 	gameObj := &tdv1alpha1.Game{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "test-game",

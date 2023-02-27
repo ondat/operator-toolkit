@@ -12,7 +12,6 @@ const (
 // ReconcilerEvent represents the action of the controller having actually done
 // anything. Any meaningful change should have an associated event.
 type ReconcilerEvent interface {
-
 	// Record this into an event recorder as a Kubernetes API event
 	Record(recorder record.EventRecorder)
 }

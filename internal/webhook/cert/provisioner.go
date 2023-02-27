@@ -93,7 +93,8 @@ func (cp *Provisioner) inject(ctx context.Context, cc *admissionregistrationv1.W
 
 func injectForMutatingWebhook(
 	cc *admissionregistrationv1.WebhookClientConfig,
-	webhooks []admissionregistrationv1.MutatingWebhook) {
+	webhooks []admissionregistrationv1.MutatingWebhook,
+) {
 	for i := range webhooks {
 		// only replacing the CA bundle to preserve the path in the WebhookClientConfig
 		webhooks[i].ClientConfig.CABundle = cc.CABundle
@@ -102,7 +103,8 @@ func injectForMutatingWebhook(
 
 func injectForValidatingWebhook(
 	cc *admissionregistrationv1.WebhookClientConfig,
-	webhooks []admissionregistrationv1.ValidatingWebhook) {
+	webhooks []admissionregistrationv1.ValidatingWebhook,
+) {
 	for i := range webhooks {
 		// only replacing the CA bundle to preserve the path in the WebhookClientConfig
 		webhooks[i].ClientConfig.CABundle = cc.CABundle
@@ -111,7 +113,8 @@ func injectForValidatingWebhook(
 
 func injectForCRD(
 	cc *admissionregistrationv1.WebhookClientConfig,
-	webhook *apix.WebhookConversion) {
+	webhook *apix.WebhookConversion,
+) {
 	webhook.ClientConfig.CABundle = cc.CABundle
 }
 

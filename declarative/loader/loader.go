@@ -51,7 +51,6 @@ func NewLoadedManifestFileSystem(baseDir string, channel string) (*ManifestFileS
 //   version: 0.3.0
 //
 func LoadPackages(fs *ManifestFileSystem, baseDir string, channel string) error {
-
 	if baseDir == "" {
 		baseDir = DefaultChannelDir
 	}

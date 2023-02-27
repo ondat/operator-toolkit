@@ -19,7 +19,6 @@ import (
 )
 
 var _ = Describe("Validating Webhooks", func() {
-
 	err := appv1alpha1.AddToScheme(scheme.Scheme)
 	Expect(err).NotTo(HaveOccurred())
 

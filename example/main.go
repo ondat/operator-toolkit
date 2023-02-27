@@ -344,7 +344,6 @@ type XClient struct {
 // with context and namespace, and convert the obtained data into the object
 // type.
 func (c *XClient) List(ctx context.Context, namespace string, obj runtime.Object) (runtime.Object, error) {
-
 	// Convert the object to unstructured object and get the object kind.
 	u := &unstructured.Unstructured{}
 	if err := c.scheme.Convert(obj, u, nil); err != nil {
@@ -383,7 +382,6 @@ func (c *XClient) List(ctx context.Context, namespace string, obj runtime.Object
 	default:
 		return nil, fmt.Errorf("unknown kind to list: %q", u.GetKind())
 	}
-
 }
 
 // Watch returns the event channel for the respective kind.

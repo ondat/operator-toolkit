@@ -17,7 +17,6 @@ import (
 )
 
 var _ = Describe("Defaulter Webhooks", func() {
-
 	err := appv1alpha1.AddToScheme(scheme.Scheme)
 	Expect(err).NotTo(HaveOccurred())
 
