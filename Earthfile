@@ -1,22 +1,31 @@
-VERSION 0.6
+VERSION 0.7
 FROM golang:1.19.6
 WORKDIR /workdir
 
+all:
+    WAIT
+        BUILD +lint
+        BUILD +test
+    END
+    WAIT
+        BUILD +gosec
+    END
+
 deps:
+    COPY go.mod go.sum ./
+    RUN go mod download
+
+deps-test:
+    FROM +deps
     COPY Makefile ./
     RUN make mockgen setup-envtest
-    COPY go.mod go.sum ./
-    RUN go mod tidy
-    RUN go mod download
-    SAVE ARTIFACT go.mod AS LOCAL go.mod
-    SAVE ARTIFACT go.sum AS LOCAL go.sum
 
 lint:
     FROM earthly/dind:alpine
     WORKDIR /workdir
     COPY . ./
-    WITH DOCKER --pull golangci/golangci-lint:v1.49.0
-        RUN docker run -w $PWD -v $PWD:$PWD golangci/golangci-lint:v1.49.0 golangci-lint run --timeout 240s
+    WITH DOCKER --pull golangci/golangci-lint:v1.51.0
+        RUN docker run -w $PWD -v $PWD:$PWD golangci/golangci-lint:v1.51.0 golangci-lint run --timeout 240s
     END
 
 gosec:
@@ -28,6 +37,6 @@ gosec:
     END
 
 test:
-    FROM +deps
+    FROM +deps-test
     COPY . ./
     RUN make _test
