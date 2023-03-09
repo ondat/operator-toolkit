@@ -1,4 +1,4 @@
-VERSION 0.7
+VERSION --use-cache-command 0.7
 FROM golang:1.19.6
 WORKDIR /workdir
 
@@ -22,21 +22,20 @@ deps-test:
 
 lint:
     FROM earthly/dind:alpine
-    WORKDIR /workdir
-    COPY . ./
+    COPY . ./w
     WITH DOCKER --pull golangci/golangci-lint:v1.51.0
-        RUN docker run -w $PWD -v $PWD:$PWD golangci/golangci-lint:v1.51.0 golangci-lint run --timeout 240s
+        RUN docker run -w /w -v /w:/w golangci/golangci-lint:v1.51.0 golangci-lint run --timeout 240s
     END
 
 gosec:
     FROM earthly/dind:alpine
-    WORKDIR /workdir
-    COPY . ./
+    COPY . ./w
     WITH DOCKER --pull securego/gosec:2.15.0
-        RUN docker run -w $PWD -v $PWD:$PWD securego/gosec:2.15.0 -exclude-dir=example -exclude-generated ./...
+        RUN docker run -w /w -v /w:/w securego/gosec:2.15.0 -exclude-dir=example -exclude-generated ./...
     END
 
 test:
     FROM +deps-test
+    CACHE $HOME/.cache/go-build
     COPY . ./
     RUN make _test
