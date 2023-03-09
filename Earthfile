@@ -22,16 +22,16 @@ deps-test:
 
 lint:
     FROM earthly/dind:alpine
-    COPY . ./w
+    COPY . ./workdir
     WITH DOCKER --pull golangci/golangci-lint:v1.51.0
-        RUN docker run -w /w -v /w:/w golangci/golangci-lint:v1.51.0 golangci-lint run --timeout 240s
+        RUN docker run -w /workdir -v /workdir:/workdir golangci/golangci-lint:v1.51.0 golangci-lint run --timeout 240s
     END
 
 gosec:
     FROM earthly/dind:alpine
-    COPY . ./w
+    COPY . ./workdir
     WITH DOCKER --pull securego/gosec:2.15.0
-        RUN docker run -w /w -v /w:/w securego/gosec:2.15.0 -exclude-dir=example -exclude-generated ./...
+        RUN docker run -w /workdir -v /workdir:/workdir securego/gosec:2.15.0 -exclude-dir=example -exclude-generated ./...
     END
 
 test:
