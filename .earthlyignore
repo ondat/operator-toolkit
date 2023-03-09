@@ -1,1 +1,5 @@
+.git/
+.github/
+.husky/
+.vscode/
 bin/

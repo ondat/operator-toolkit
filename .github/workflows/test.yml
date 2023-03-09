@@ -3,23 +3,14 @@ name: Lint and test
 on: [push, pull_request]
 
 jobs:
-  lint:
-    name: lint
+  ci:
+    name: run ci
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: make lint
-
-  gosec:
-    name: gosec
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: make gosec
-
-  go-test:
-    name: go tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: make test
+      - name: lint
+        run: make lint
+      - name: test
+        run: make test
+      - name: gosec
+        run: make gosec

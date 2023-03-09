@@ -3,7 +3,7 @@ MMD_CMD = mmdc -t neutral
 COMPOSITE_CONTROLLER_DIR = controller/composite/v1
 
 BIN_PATH = $(shell pwd)/bin
-$(shell mkdir $(BIN_PATH) &>/dev/null)
+$(shell mkdir -p $(BIN_PATH) &>/dev/null)
 
 # Since all the external tools are placed in BIN_PATH, append $PATH with
 # BIN_PATH.
@@ -11,7 +11,7 @@ export PATH := $(BIN_PATH):$(PATH)
 
 # KUBEBUILDER_ASSETS path is set as environment variable when running envtest.
 HUSKEY_BIN_VERSION = 0.2.5
-EARTHLY_BIN_VERSION = 0.6.23
+EARTHLY_BIN_VERSION = 0.7.1
 ENVTEST_BIN_VERSION = 1.21.4
 KUBEBUILDER_ASSETS = $(shell $(SETUP_ENVTEST) use -i -p path $(ENVTEST_BIN_VERSION))
 
@@ -61,7 +61,7 @@ setup-envtest:
 EARTHLY = $(shell pwd)/bin/earthly
 earthly:
 ifeq (,$(wildcard $(EARTHLY)))
-	curl -L https://github.com/earthly/earthly/releases/download/v$(EARTHLY_BIN_VERSION)/earthly-linux-amd64 -o $(EARTHLY)
+	curl -sL https://github.com/earthly/earthly/releases/download/v$(EARTHLY_BIN_VERSION)/earthly-linux-amd64 -o $(EARTHLY)
 	chmod +x $(EARTHLY)
 endif
 	
